@@ -7,8 +7,10 @@ plugins {
   alias(libs.plugins.kotlin.jvm)
 }
 
+
+
 application {
-  mainClass = "io.gihub.bstdoom.tagessieg.MainKt"
+  mainClass = "io.github.bstdoom.tagessieg.MainKt"
 }
 
 repositories {
@@ -17,7 +19,7 @@ repositories {
 }
 
 dependencies {
-  // This dependency is used by the application.
+  implementation(libs.cli.clikt)
 }
 
 testing {
@@ -37,3 +39,12 @@ java {
   }
 }
 
+tasks.jar {
+  manifest {
+    attributes["Main-Class"] = application.mainClass
+  }
+  from({
+    configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
+  })
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
