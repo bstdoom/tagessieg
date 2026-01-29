@@ -1,0 +1,96 @@
+{
+  "event": {
+    "action": "closed",
+    "issue": {
+      "active_lock_reason": null,
+      "assignee": null,
+      "assignees": [],
+      "author_association": "CONTRIBUTOR",
+      "body": "### Ergebnis Spiel 1 (J:H)\n\n0:1\n\n### Ergebnis Spiel 2 (J:H)\n\n1:0\n\n### Ergebnis Spiel 3 (J:H)\n\n1:0",
+      "closed_at": "2026-01-29T23:13:17Z",
+      "comments": 3,
+      "comments_url": "https://api.github.com/repos/bstdoom/tagessieg/issues/1/comments",
+      "created_at": "2026-01-29T22:28:51Z",
+      "events_url": "https://api.github.com/repos/bstdoom/tagessieg/issues/1/events",
+      "html_url": "https://github.com/bstdoom/tagessieg/issues/1",
+      "id": 3872881172,
+      "issue_dependencies_summary": {
+        "blocked_by": 0,
+        "blocking": 0,
+        "total_blocked_by": 0,
+        "total_blocking": 0
+      },
+      "labels": [
+        {
+          "color": "ab33a5",
+          "default": false,
+          "description": "",
+          "id": 10087465957,
+          "name": "spieltag",
+          "node_id": "LA_kwDORDl4qc8AAAACWUKD5Q",
+          "url": "https://api.github.com/repos/bstdoom/tagessieg/labels/spieltag"
+        },
+        {
+          "color": "f20d71",
+          "default": false,
+          "description": "",
+          "id": 10087466472,
+          "name": "Scope: Test",
+          "node_id": "LA_kwDORDl4qc8AAAACWUKF6A",
+          "url": "https://api.github.com/repos/bstdoom/tagessieg/labels/Scope:%20Test"
+        }
+      ],
+      "labels_url": "https://api.github.com/repos/bstdoom/tagessieg/issues/1/labels{/name}",
+      "locked": false,
+      "milestone": null,
+      "node_id": "I_kwDORDl4qc7m13oU",
+      "number": 1,
+      "performed_via_github_app": null,
+      "reactions": {
+        "confused": 0,
+        "eyes": 0,
+        "heart": 0,
+        "hooray": 0,
+        "laugh": 0,
+        "rocket": 0,
+        "total_count": 0,
+        "url": "https://api.github.com/repos/bstdoom/tagessieg/issues/1/reactions"
+      }
+    },
+    "repository": {
+      "full_name": "bstdoom/tagessieg"
+    }
+  },
+  "comments": [
+    {
+      "id": "IC_kwDORDl4qc7jvBRx",
+      "author": {
+        "login": "jangalinski"
+      },
+      "authorAssociation": "CONTRIBUTOR",
+      "body": "Erster Kommentar",
+      "createdAt": "2026-01-29T22:29:06Z",
+      "url": "https://github.com/bstdoom/tagessieg/issues/1#issuecomment-3820753722"
+    },
+    {
+      "id": "IC_kwDORDl4qc7jvBRx",
+      "author": {
+        "login": "jangalinski"
+      },
+      "authorAssociation": "CONTRIBUTOR",
+      "body": "Zweiter Kommentar",
+      "createdAt": "2026-01-29T22:29:12Z",
+      "url": "https://github.com/bstdoom/tagessieg/issues/1#issuecomment-3820754033"
+    },
+    {
+      "id": "IC_kwDORDl4qc7jvUEL",
+      "author": {
+        "login": "jangalinski"
+      },
+      "authorAssociation": "CONTRIBUTOR",
+      "body": "Noch ein Kommentar",
+      "createdAt": "2026-01-29T22:54:20Z",
+      "url": "https://github.com/bstdoom/tagessieg/issues/1#issuecomment-3820830987"
+    }
+  ]
+}

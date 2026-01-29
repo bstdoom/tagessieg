@@ -13,10 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
 
       - name: Dump Combined Issue Data JSON
         env:
@@ -26,4 +27,5 @@ jobs:
           COMMENTS_JSON=$(gh issue view ${{ github.event.issue.number }} --json comments)
           echo "$EVENT_JSON" > event.json
           echo "$COMMENTS_JSON" > comments.json
-          jq -n --slurpfile event event.json --slurpfile comments comments.json '{"event": $event[0], "comments": $comments[0].comments}'
+          jq -n --slurpfile event event.json --slurpfile comments comments.json '{"event": $event[0], "comments": $comments[0].comments}' > combined.json
+          cat combined.json
