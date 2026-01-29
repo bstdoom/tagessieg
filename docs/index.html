@@ -1,19 +1,24 @@
+<!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reveal.js + Kotlin DSL</title>
-    <link href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css" rel="stylesheet">
-    <style>.reveal {
-    background:
-      linear-gradient(
-        rgba(0,0,0,0.55),
-        rgba(0,0,0,0.55)
-      ),
-      url("https://picsum.photos/1920/1080") center / cover no-repeat;
-}.reveal table {
+    <meta name="title" content="My Presentation">
+    <title>My Presentation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/beige.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css">
+    <style>            .reveal {
+                background:
+                  linear-gradient(
+                    rgba(0,0,0,0.55),
+                    rgba(0,0,0,0.55)
+                  ),
+                  url("https://picsum.photos/1920/1080") center / cover no-repeat;
+            }
+
+
+.reveal table {
   border-collapse: collapse;
   margin: auto;
   font-size: 0.8em;
@@ -39,111 +44,18 @@
   <body>
     <div class="reveal">
       <div class="slides">
-        <section>
-          <h1>Slides as Code</h1>
-          <p>Reveal.js + Kotlin HTML DSL</p>
+        <section data-auto-animate="">
+          <h1 class="r-fit-text" data-id="4be9f9ce-fcf9-475e-a209-6b510efe9225" style="">Hello World</h1>
+<img data-id="570397fc-ac09-4240-b429-d8157812d810" src="assets/kick-off-2-screen.jpg"></section>
+        <section data-auto-animate="">
+          <h1 class="r-fit-text" data-id="6007736b-ab67-49f0-b06c-07d67864ba49" style="">Hello World</h1>
         </section>
-        <section>
-          <h2>Warum Kotlin?</h2>
-          <ul>
-            <li>Typsicher</li>
-            <li>Refactorbar</li>
-            <li>Kein Template-Wirrwarr</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Tabelle</h2>
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Punkte</th>
-                <th>Spiele</th>
-                <th>Tore</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>17</td>
-                <td>6</td>
-                <td>10:8</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>1</td>
-                <td>6</td>
-                <td>8:10</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <section>
-          <section>
-            <h3>Vertikal 1</h3>
-          </section>
-          <section>
-            <h3>Vertikal 2</h3>
-          </section>
-        </section>
-        <section>
-          <h2>Line Chart</h2>
-          <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><line x1="50" y1="350" x2="550" y2="350" stroke="white"/>
-<line x1="50" y1="50"  x2="50"  y2="350" stroke="white"/>
-
-<polyline
-  points="50,300 150,200 250,250 350,150 450,180"
-  fill="none"
-  stroke="#38bdf8"
-  stroke-width="3"/>
-
-<circle cx="50"  cy="300" r="4" fill="#38bdf8" class="fragment"/>
-<circle cx="150" cy="200" r="4" fill="#38bdf8" class="fragment"/>
-<circle cx="250" cy="250" r="4" fill="#38bdf8" class="fragment"/></svg>
-        </section>
-        <section>
-          <h2>Line Chart</h2>
-          <svg xmlns="http://www.w3.org/2000/svg"><svg width="600" height="400" viewBox="0 0 600 400"><line x1="60" y1="60" x2="60" y2="340" stroke="white"/>
-<line x1="60" y1="340" x2="540" y2="340" stroke="white"/><text x="300" y="390" fill="white" text-anchor="middle">Zeit</text>
-<text x="15" y="200" fill="white" text-anchor="middle"
-      transform="rotate(-90 15 200)">Wert</text><polyline
-  points="60.0,260.0 300.0,100.0 540.0,140.0"
-  fill="none"
-  stroke="#38bdf8"
-  stroke-width="3"/><circle cx="60.0" cy="260.0"
-        r="4" fill="#38bdf8" class="fragment"/><circle cx="300.0" cy="100.0"
-        r="4" fill="#38bdf8" class="fragment"/><circle cx="540.0" cy="140.0"
-        r="4" fill="#38bdf8" class="fragment"/><polyline
-  points="60.0,180.0 300.0,220.0 540.0,60.0"
-  fill="none"
-  stroke="#22c55e"
-  stroke-width="3"/><circle cx="60.0" cy="180.0"
-        r="4" fill="#22c55e" class="fragment"/><circle cx="300.0" cy="220.0"
-        r="4" fill="#22c55e" class="fragment"/><circle cx="540.0" cy="60.0"
-        r="4" fill="#22c55e" class="fragment"/></svg></svg>
-        </section>
-        <section>
-          <h2>Pie Chart</h2>
-          <svg xmlns="http://www.w3.org/2000/svg"><svg width="300" height="300" viewBox="0 0 300 300"><path d="M 150.0 150.0
-         L 150.0 0.0
-         A 150.0 150.0 0 0 1 238.16778784387097 271.3525491562421 Z"
-      fill="#38bdf8"
-      class="fragment"/><path d="M 150.0 150.0
-         L 238.16778784387097 271.3525491562421
-         A 150.0 150.0 0 0 1 7.341522555726982 196.35254915624213 Z"
-      fill="#22c55e"
-      class="fragment"/><path d="M 150.0 150.0
-         L 7.341522555726982 196.35254915624213
-         A 150.0 150.0 0 0 1 61.83221215612902 28.647450843757895 Z"
-      fill="#f97316"
-      class="fragment"/><path d="M 150.0 150.0
-         L 61.83221215612902 28.647450843757895
-         A 150.0 150.0 0 0 1 149.99999999999997 0.0 Z"
-      fill="#ef4444"
-      class="fragment"/></svg></svg>
+        <section data-auto-animate="">
+          <h1 class="r-fit-text" data-id="9605430d-012a-4a26-b4aa-fc21309649cf" style="">Hello World</h1>
         </section>
       </div>
     </div>
+    <script>const configurationJson = {"controls":true,"progress":true,"history":false,"center":true,"touch":true,"autoAnimateDuration":0.5,"view":null,"theme":["Predefined","BEIGE"],"additionalCssStyle":"            .reveal {\n                background:\n                  linear-gradient(\n                    rgba(0,0,0,0.55),\n                    rgba(0,0,0,0.55)\n                  ),\n                  url(\"https://picsum.photos/1920/1080\") center / cover no-repeat;\n            }\n\n\n.reveal table {\n  border-collapse: collapse;\n  margin: auto;\n  font-size: 0.8em;\n  color: #f8fafc; /* ✅ Text explizit weiß */\n}\n\n.reveal th,\n.reveal td {\n  border: 1px solid rgba(255,255,255,0.3);\n  padding: 0.4em 0.6em;\n  color: #f8fafc; /* ✅ wichtig: nicht erben! */\n}\n\n.reveal th {\n  background: rgba(255,255,255,0.15);\n  font-weight: 600;\n}\n\n.reveal tbody tr:nth-child(even) {\n  background: rgba(255,255,255,0.05);\n}","additionalCssStyleFromBuilder":"","controlsTutorial":true,"controlsLayout":"bottom-right","controlsBackArrows":"faded","slideNumber":["Disable",{}],"showSlideNumber":"all","hashOneBasedIndex":false,"hash":false,"respondToHashChanges":false,"jumpToSlide":false,"keyboard":true,"disableLayout":false,"overview":true,"loop":false,"rtl":false,"navigationMode":"default","shuffle":false,"fragments":true,"fragmentInURL":true,"help":true,"pause":true,"showNotes":false,"autoAnimate":true,"autoAnimateEasing":"ease","autoAnimateUnmatched":true,"autoSlide":0.0,"autoSlideStoppable":true,"defaultTiming":0,"mouseWheel":false,"previewLinks":false,"focusBodyOnPageVisibilityChange":true,"transition":"slide","transitionSpeed":"default","backgroundTransition":"slide","parallaxBackgroundImage":"","parallaxBackgroundSize":"","parallaxBackgroundRepeat":"","pdfSeparateFragments":true,"hideInactiveCursor":true}</script>
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js"></script>
     <script>Reveal.initialize({

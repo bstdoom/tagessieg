@@ -1,0 +1,25 @@
+name: Debug Issue Event
+
+on:
+  issues:
+    types: [ closed ]
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Dump Issue Event JSON
+        env:
+          EVENT_JSON: ${{ toJson(github.event) }}
+        run: echo "$EVENT_JSON"
+
+      - name: Dump Issue Comments JSON
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue view ${{ github.event.issue.number }} --json comments

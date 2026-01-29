@@ -5,6 +5,7 @@ plugins {
 
   // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
   alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.kotlin.serialization)
 }
 
 
@@ -20,6 +21,19 @@ repositories {
 
 dependencies {
   implementation(libs.cli.clikt)
+
+  implementation(libs.kotlinx.html)
+  implementation(libs.revealkt.dsl)
+
+  implementation(libs.kotlinx.serialization.core)
+  implementation(libs.kotlinx.serialization.csv)
+  implementation(libs.kotlinx.serialization.json)
+  implementation(libs.kotlinx.serialization.datetime)
+
+  testImplementation(libs.junit.jupiter.api)
+  testRuntimeOnly(libs.junit.jupiter.engine)
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+  testImplementation(libs.assertj.core)
 }
 
 testing {
@@ -39,12 +53,24 @@ java {
   }
 }
 
-tasks.jar {
-  manifest {
-    attributes["Main-Class"] = application.mainClass
+tasks {
+
+  jar {
+    manifest {
+      attributes["Main-Class"] = application.mainClass
+    }
+    from({
+      configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
+    })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
   }
-  from({
-    configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
-  })
-  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+  test {
+    useJUnitPlatform()
+  }
+
+  withType<JavaExec> {
+    workingDir = rootProject.projectDir
+  }
+
 }

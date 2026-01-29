@@ -1,0 +1,33 @@
+name: Fix Issue Date
+
+on:
+  issues:
+    types: [ opened, edited ]
+
+jobs:
+  fix-date:
+    if: contains(github.event.issue.labels.*.name, 'spieltag')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check and update title
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          TITLE: ${{ github.event.issue.title }}
+        run: |
+          if [[ "$TITLE" == *"dd.mm.yyyy"* ]]; then
+            # Current date in dd.MM.yyyy format
+            DATE=$(date +'%d.%m.%Y')
+            # Replace dd.mm.yyyy with current date
+            NEW_TITLE=$(echo "$TITLE" | sed "s/dd\.mm\.yyyy/$DATE/g")
+
+            echo "Updating title to: $NEW_TITLE"
+            gh issue edit "$ISSUE_NUMBER" --title "$NEW_TITLE" --repo "$GITHUB_REPOSITORY"
+          else
+            echo "Title does not contain placeholder or was already replaced."
+          fi

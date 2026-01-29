@@ -1,0 +1,39 @@
+name: "Neuer Spieltag"
+description: "Ergebnisse eines neuen Kick Off 2 Spieltags erfassen."
+title: "Spieltag: dd.mm.yyyy"
+labels: spieltag
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bitte die Ergebnisse der drei Spiele des heutigen Spieltags eingeben.
+        Ersetze `dd.mm.yyyy` im Titel durch das heutige Datum.
+
+        | Spiel | Ergebnis (J:H) |
+        | :--- | :--- |
+        | Spiel 1 | |
+        | Spiel 2 | |
+        | Spiel 3 | |
+  - type: input
+    id: spiel1
+    attributes:
+      label: Ergebnis Spiel 1 (J:H)
+      value: "0:0"
+    validations:
+      required: true
+
+  - type: input
+    id: spiel2
+    attributes:
+      label: Ergebnis Spiel 2 (J:H)
+      value: "0:0"
+    validations:
+      required: true
+
+  - type: input
+    id: spiel3
+    attributes:
+      label: Ergebnis Spiel 3 (J:H)
+      value: "0:0"
+    validations:
+      required: true
