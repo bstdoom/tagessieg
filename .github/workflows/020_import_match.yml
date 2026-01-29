@@ -17,7 +17,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'gradle'
+
+      - name: Validate Gradle Wrapper
+        run: ./gradlew --version
 
       - name: Dump Combined Issue Data JSON
         env:
@@ -27,5 +29,12 @@ jobs:
           COMMENTS_JSON=$(gh issue view ${{ github.event.issue.number }} --json comments)
           echo "$EVENT_JSON" > event.json
           echo "$COMMENTS_JSON" > comments.json
-          jq -n --slurpfile event event.json --slurpfile comments comments.json '{"event": $event[0], "comments": $comments[0].comments}' > combined.json
+          jq -n --slurpfile event event.json --slurpfile comments comments.json '{
+            id: $event[0].issue.id,
+            title: $event[0].issue.title,
+            body: $event[0].issue.body,
+            closed_at: $event[0].issue.closed_at,
+            labels: [$event[0].issue.labels[].name],
+            comments: [$comments[0].comments[].body]
+          }' > combined.json
           cat combined.json
