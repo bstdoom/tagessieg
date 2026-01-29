@@ -6,6 +6,7 @@ on:
 
 jobs:
   debug:
+    if: contains(github.event.issue.labels.*.name, 'spieltag') && github.event.issue.state == 'closed'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,13 +16,12 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-      - name: Dump Issue Event JSON
-        env:
-          EVENT_JSON: ${{ toJson(github.event) }}
-        run: echo "$EVENT_JSON"
-
-      - name: Dump Issue Comments JSON
+      - name: Dump Combined Issue Data JSON
         env:
           GH_TOKEN: ${{ github.token }}
+          EVENT_JSON: ${{ toJson(github.event) }}
         run: |
-          gh issue view ${{ github.event.issue.number }} --json comments
+          COMMENTS_JSON=$(gh issue view ${{ github.event.issue.number }} --json comments)
+          echo "$EVENT_JSON" > event.json
+          echo "$COMMENTS_JSON" > comments.json
+          jq -n --slurpfile event event.json --slurpfile comments comments.json '{"event": $event[0], "comments": $comments[0].comments}'

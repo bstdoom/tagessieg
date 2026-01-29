@@ -1,0 +1,34 @@
+{
+  "comments": [
+    {
+      "id": "IC_kwDORDl4qc7jvBM6",
+      "author": {
+        "login": "jangalinski"
+      },
+      "authorAssociation": "CONTRIBUTOR",
+      "body": "Erster Kommentar",
+      "createdAt": "2026-01-29T22:29:06Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/bstdoom/tagessieg/issues/1#issuecomment-3820753722",
+      "viewerDidAuthor": false
+    },
+    {
+      "id": "IC_kwDORDl4qc7jvBRx",
+      "author": {
+        "login": "jangalinski"
+      },
+      "authorAssociation": "CONTRIBUTOR",
+      "body": "Zweiter Kommentar",
+      "createdAt": "2026-01-29T22:29:12Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/bstdoom/tagessieg/issues/1#issuecomment-3820754033",
+      "viewerDidAuthor": false
+    }
+  ]
+}
