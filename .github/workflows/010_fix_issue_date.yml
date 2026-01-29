@@ -1,4 +1,7 @@
+# Issues created via template will have a dd.MM.yyyy placeholder in the title
+# This workflow replaces this placeholder with the current date
 name: Fix Issue Date
+run-name: "Fix issue data: ${{ github.event.issue.title }}"
 
 on:
   issues:

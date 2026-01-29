@@ -1,11 +1,13 @@
-name: Debug Issue Event
+# Let GitHub pass the raw event- and comment-data to cli for processing
+name: Import Match
+run-name: "Import Match ${{ github.event.issue.title }}"
 
 on:
   issues:
     types: [ closed ]
 
 jobs:
-  debug:
+  import-match:
     if: contains(github.event.issue.labels.*.name, 'spieltag') && github.event.issue.state == 'closed'
     runs-on: ubuntu-latest
     steps:
