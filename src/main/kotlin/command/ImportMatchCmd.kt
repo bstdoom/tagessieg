@@ -3,10 +3,10 @@ package io.github.bstdoom.tagessieg.command
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import io.github.bstdoom.tagessieg.infrastructure.MatchesCsv
 import io.github.bstdoom.tagessieg.infrastructure.SerializationFormat
 import io.github.bstdoom.tagessieg.model.Game
 import io.github.bstdoom.tagessieg.model.Match
-import io.github.bstdoom.tagessieg.shared.CsvSerialization
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format.char
 import kotlinx.serialization.Serializable
@@ -67,6 +67,18 @@ class ImportMatchCmd : SubCommand(NAME) {
       comment = issue.comments.map { it.trim() }.filter { it.isNotBlank() }.joinToString(", ").takeIf { it.isNotBlank() }
     )
 
-    echof(match)
+    val isTest = issue.labels.contains(SCOPE_TEST)
+    val csvPath = if (isTest) ctx.properties.testCsv else ctx.properties.mainCsv
+    val absoluteCsvPath = ctx.workDir.resolve(csvPath)
+
+    if (ctx.dryRun) {
+      echo("Dry run: match with id ${match.id} would be added to $csvPath")
+    } else {
+      val matchesCsv = MatchesCsv(absoluteCsvPath)
+      matchesCsv + match
+      if (!ctx.quiet) {
+        echo("Match with id ${match.id} added to $csvPath")
+      }
+    }
   }
 }

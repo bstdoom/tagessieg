@@ -39,10 +39,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y just
 
-      - name: Test Just
-        run: |
-          just tagessieg -f json info
-
       # 1. Read the issue and comments from GitHub and write them to match.json
       - name: Parse Event and Comments - Provide match.json
         env:
@@ -62,5 +58,18 @@ jobs:
             comments: [$comments[0].comments[].body]
           }' > match.json
           cat match.json
+
+      # 2. Run the import-match command
+      - name: Import Match to CSV
+        run: just tagessieg import-match --file match.json
+
+      # 3. Commit and Push changes
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data/*.csv
+          git commit -m "Import match ${{ github.event.issue.title }}" || echo "No changes to commit"
+          git push
 
 

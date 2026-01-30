@@ -6,16 +6,6 @@
 tagessieg +args:
   @./gradlew run --quiet --console=plain --no-daemon --args="{{args}}"
 
-# import match from json file
-[group('tagessieg')]
-import-matches json_file:
-  @just tagessieg "import-match --file "{{json_file}}""
-
-# runs `tagessieg info`
-[group('tagessieg')]
-info +ARGS="":
-  @just tagessieg info {{ARGS}}
-
 build:
   ./gradlew -x test build
 
