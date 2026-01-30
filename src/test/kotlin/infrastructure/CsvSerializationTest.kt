@@ -36,7 +36,6 @@ class CsvSerializationTest {
     val file: Path = tempDir.resolve("test.csv").apply {
       writeText(Fixtures.testData)
     }
-    println(file.readText())
 
     val matches = CsvSerialization.decodeFromPath(file)
     assertThat(matches).hasSize(101)

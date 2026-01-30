@@ -10,14 +10,19 @@ import kotlin.io.path.inputStream
 @Serializable
 data class TagessiegProperties(
   @Contextual
-  val mainCsvPath: Path
+  val mainCsv: Path,
+  val testCsv: Path
 ) {
 
   companion object {
     private const val GRADLE_PROPERTIES_FILE = "gradle.properties"
-    private data object Keys {
-      const val DATA_CSV_MAIN = "tagessieg.data.csv.main"
+    internal data object PropertyKeys {
+      const val DATA_CSV_MAIN = "tagessieg.data.matches.main"
+      const val DATA_CSV_TEST = "tagessieg.data.matches.test"
     }
+
+    fun Properties.getRequired(key: String): String = getProperty(key) ?: throw IllegalStateException("Property '${key}' is required in gradle.properties")
+
     fun read(rootPath: Path = Path.of(".")): TagessiegProperties {
       val props = Properties()
       val gradlePropsFile = rootPath.resolve(GRADLE_PROPERTIES_FILE)
@@ -25,11 +30,9 @@ data class TagessiegProperties(
         gradlePropsFile.inputStream().use { props.load(it) }
       }
 
-      val mainCsvPath = props.getProperty(Keys.DATA_CSV_MAIN)
-        ?: throw IllegalStateException("Property '${Keys.DATA_CSV_MAIN}' is required in gradle.properties")
-
       return TagessiegProperties(
-        mainCsvPath = Path.of(mainCsvPath)
+        mainCsv = Path.of(props.getRequired(PropertyKeys.DATA_CSV_MAIN)),
+        testCsv = Path.of(props.getRequired(PropertyKeys.DATA_CSV_TEST))
       )
     }
   }

@@ -12,6 +12,7 @@ class InfoCmd : SubCommand(NAME){
   override fun run() {
     val match = Match(id=1, date = LocalDate(2026,1,30), game1 = Game(1,2), game2 = Game(3,4), game3 = Game(5,6), comment = "test")
     echo("Info command executed")
+    echof("Info command executed with echof")
     echof(ctx)
     echof(match)
   }
