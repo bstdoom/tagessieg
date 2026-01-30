@@ -28,6 +28,11 @@ jobs:
       - name: Validate Gradle Wrapper
         run: ./gradlew --version
       # Setup just
+      - name: Setup just
+        uses: extractions/setup-just@v2
+        with:
+          just-version: 'latest'
+
       - name: Install just
         run: |
           sudo apt-get update
