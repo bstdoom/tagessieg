@@ -2,9 +2,9 @@
 
 package io.github.bstdoom.tagessieg.infrastructure
 
+import kotlinx.datetime.LocalDateRange
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.StringFormat
 import kotlinx.serialization.csv.Csv
@@ -38,11 +38,18 @@ enum class SerializationFormat(private val format: StringFormat) : StringFormat 
   ;
 
   companion object {
+
     data object PathSerializer : KSerializer<Path> {
       override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Path", PrimitiveKind.STRING)
       override fun serialize(encoder: Encoder, value: Path) = encoder.encodeString(value.toString())
       override fun deserialize(decoder: Decoder): Path = Path(decoder.decodeString())
     }
+
+//    data object LocalDateRangeSerializer : KSerializer<LocalDateRange> {
+//      override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Path", PrimitiveKind.STRING)
+//      override fun serialize(encoder: Encoder, value: Path) = encoder.encodeString(value.toString())
+//      override fun deserialize(decoder: Decoder): Path = Path(decoder.decodeString())
+//    }
 
     fun fromString(format: String): SerializationFormat? {
       return entries.find { it.name.equals(format, ignoreCase = true) }

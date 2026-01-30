@@ -14,6 +14,7 @@ data class RootCtx(
   @Contextual
   val workDir: Path,
   val properties: TagessiegProperties,
+  val dryRun: Boolean
 ) {
   companion object {
   }

@@ -20,6 +20,7 @@ class ImportMatchCmd : SubCommand(NAME) {
 
   companion object {
     const val NAME = "import-match"
+    const val SCOPE_TEST = "Scope: Test"
 
     private val DATE_FORMAT = LocalDate.Format {
       day()
@@ -66,6 +67,6 @@ class ImportMatchCmd : SubCommand(NAME) {
       comment = issue.comments.map { it.trim() }.filter { it.isNotBlank() }.joinToString(", ").takeIf { it.isNotBlank() }
     )
 
-    echof(CsvSerialization.encode(match))
+    echof(match)
   }
 }

@@ -13,7 +13,7 @@ class ImportMatchCmdTest {
   fun `should import match from json`() {
     val jsonPath = "src/test/resources/github/match-3873007996.json"
 
-    val result = cli.test("${ImportMatchCmd.NAME} --file $jsonPath")
+    val result = cli.test("-f csv ${ImportMatchCmd.NAME} --file $jsonPath")
 
     assertThat(result.statusCode).isEqualTo(0)
     assertThat(result.stdout.trim().lines()).hasSize(1)

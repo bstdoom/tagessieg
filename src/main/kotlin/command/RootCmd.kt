@@ -15,13 +15,15 @@ class RootCmd : CliktCommand(name = NAME) {
 
   companion object {
     const val NAME = "tagessieg"
-    const val SCOPE_TEST = "Scope: Test"
   }
-
 
   private val quiet by option(
     "-q", "--quiet",
     help = "Suppress non-essential output, precedence over `--format`."
+  ).flag(default = false)
+  private val dryRun by option(
+    "-n", "--dry-run",
+    help = "Perform a trial run with no changes made."
   ).flag(default = false)
   private val format: EchoFormat by option(
     "-f", "--format",
@@ -37,7 +39,8 @@ class RootCmd : CliktCommand(name = NAME) {
     currentContext.obj = RootCtx(
       workDir = workDir,
       properties = TagessiegProperties.read(workDir),
-      format = if (quiet) EchoFormat.QUIET else format
+      format = if (quiet) EchoFormat.QUIET else format,
+      dryRun = dryRun
     )
   }
 

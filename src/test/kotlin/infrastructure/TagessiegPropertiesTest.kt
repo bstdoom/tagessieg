@@ -16,6 +16,7 @@ class TagessiegPropertiesTest {
             org.gradle.parallel=true
             tagessieg.data.matches.main=docs/data/matches.csv
             tagessieg.data.matches.test=docs/data/matches-test.csv
+            tagessieg.config.daterange=2023-01-01,2023-01-31
             tagessieg.another.prop=value
             other.prop=should.not.be.loaded
         """.trimIndent())
@@ -29,6 +30,7 @@ class TagessiegPropertiesTest {
     fun `should throw exception if required property is missing`(@TempDir tempDir: Path) {
         val gradleProps = tempDir.resolve("gradle.properties")
         gradleProps.toFile().writeText("""
+            tagessieg.config.daterange=2023-01-01,2026-12-31
             org.gradle.parallel=true
         """.trimIndent())
 

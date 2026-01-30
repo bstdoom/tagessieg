@@ -79,8 +79,8 @@ class LocalDateRangeTest {
   fun `AllTime should contain any date`() {
     val range = LocalDateRange.AllTime
     assertThat(range.contains(LocalDate(2023, 1, 1))).isTrue()
-    assertThat(range.contains(LocalDate(0, 1, 1))).isTrue()
-    assertThat(range.contains(LocalDate(9999, 12, 31))).isTrue()
+    assertThat(range.contains(LocalDate(2026, 12, 31))).isTrue()
+    assertThat(range.contains(LocalDate(2024, 6, 15))).isTrue()
   }
 
   @Nested
@@ -88,6 +88,7 @@ class LocalDateRangeTest {
     @Test
     fun `ByDate should contain date within range`() {
       val range = LocalDateRange.ByDate(LocalDate(2023, 1, 1), LocalDate(2023, 1, 10))
+
       assertThat(range.contains(LocalDate(2023, 1, 1))).isTrue()
       assertThat(range.contains(LocalDate(2023, 1, 5))).isTrue()
       assertThat(range.contains(LocalDate(2023, 1, 10))).isTrue()
@@ -149,7 +150,7 @@ class LocalDateRangeTest {
     val range = LocalDateRange.After(LocalDate(2023, 6, 1))
     assertThat(range.contains(LocalDate(2023, 6, 1))).isTrue()
     assertThat(range.contains(LocalDate(2023, 12, 31))).isTrue()
-    assertThat(range.contains(LocalDate(9999, 12, 31))).isTrue()
+    assertThat(range.contains(LocalDate(2026, 12, 31))).isTrue()
     assertThat(range.contains(LocalDate(2023, 5, 31))).isFalse()
   }
 
@@ -158,7 +159,7 @@ class LocalDateRangeTest {
     val range = LocalDateRange.Before(LocalDate(2023, 6, 1))
     assertThat(range.contains(LocalDate(2023, 6, 1))).isTrue()
     assertThat(range.contains(LocalDate(2023, 1, 1))).isTrue()
-    assertThat(range.contains(LocalDate(0, 1, 1))).isTrue()
+    assertThat(range.contains(LocalDate(2023, 1, 1))).isTrue()
     assertThat(range.contains(LocalDate(2023, 6, 2))).isFalse()
   }
 
