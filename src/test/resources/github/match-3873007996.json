@@ -1,0 +1,16 @@
+{
+  "id": 3873007996,
+  "title": "Spieltag: 29.01.2026",
+  "body": "### Ergebnis Spiel 1 (J:H)\n\n0:0\n\n### Ergebnis Spiel 2 (J:H)\n\n0:0\n\n### Ergebnis Spiel 3 (J:H)\n\n0:0",
+  "created_at": "2026-01-29T22:28:51Z",
+  "closed_at": "2026-01-29T23:28:38Z",
+  "labels": [
+    "wontfix",
+    "spieltag",
+    "Scope: Test"
+  ],
+  "comments": [
+    "With comment 1",
+    "Now we close"
+  ]
+}

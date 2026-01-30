@@ -9,6 +9,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
+import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 class CsvSerializationTest {
@@ -35,6 +36,7 @@ class CsvSerializationTest {
     val file: Path = tempDir.resolve("test.csv").apply {
       writeText(Fixtures.testData)
     }
+    println(file.readText())
 
     val matches = CsvSerialization.decodeFromPath(file)
     assertThat(matches).hasSize(101)

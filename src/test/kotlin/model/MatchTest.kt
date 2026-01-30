@@ -57,5 +57,6 @@ class MatchTest {
     val match = match(date = "2026-01-22", game1 = game1, game2 = game2, game3 = game3)
     assertThat(match.winner).isEqualTo(expectWinner)
     assertThat(match.grandSlam).`as` { "expected $match grandSlam=$expectGrandslam" }.isEqualTo(expectGrandslam)
+    assertThat(match.id).isPositive()
   }
 }

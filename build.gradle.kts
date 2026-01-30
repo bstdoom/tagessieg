@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
   base
   idea
@@ -54,6 +56,12 @@ java {
 }
 
 tasks {
+
+  withType<KotlinCompile> {
+    compilerOptions {
+      //freeCompilerArgs.add("-Xcontext-parameters")
+    }
+  }
 
   jar {
     manifest {

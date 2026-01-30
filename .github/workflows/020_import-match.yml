@@ -8,20 +8,33 @@ on:
 
 jobs:
   import-match:
+    # only run if the issue has the 'spieltag' label
     if: contains(github.event.issue.labels.*.name, 'spieltag') && github.event.issue.state == 'closed'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+      # Check out the repo - main branch
       - uses: actions/checkout@v4
 
+      # Setup Java
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
+          cache: 'gradle'
 
+      # Setup Gradle
       - name: Validate Gradle Wrapper
         run: ./gradlew --version
+      # Setup just
+      - name: Install just
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
 
-      - name: Dump Combined Issue Data JSON
+      # 1. Read the issue and comments from GitHub and write them to match.json
+      - name: Parse Event and Comments - Provide match.json
         env:
           GH_TOKEN: ${{ github.token }}
           EVENT_JSON: ${{ toJson(github.event) }}
@@ -33,8 +46,11 @@ jobs:
             id: $event[0].issue.id,
             title: $event[0].issue.title,
             body: $event[0].issue.body,
+            created_at: $event[0].issue.created_at,
             closed_at: $event[0].issue.closed_at,
             labels: [$event[0].issue.labels[].name],
             comments: [$comments[0].comments[].body]
-          }' > combined.json
-          cat combined.json
+          }' > match.json
+          cat match.json
+
+

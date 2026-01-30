@@ -1,11 +1,13 @@
 package io.github.bstdoom.tagessieg.model
 
+import kotlin.random.Random
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 @Serializable
 data class Match(
+  val id: Long = Random.nextLong(1, Long.MAX_VALUE),
   val date: LocalDate,
   val game1: Game,
   val game2: Game,

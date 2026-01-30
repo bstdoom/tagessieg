@@ -1,11 +1,11 @@
 package io.github.bstdoom.tagessieg.infrastructure
 
 import dev.limebeck.revealkt.core.RevealKt
-import io.github.bstdoom.tagessieg.JsonString
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 
 // Copied from reveal-kt-app, since we use custom rendering.
 @Serializable
@@ -192,6 +192,6 @@ data class RevealConfiguration(
     ) : Theme
   }
 
-  fun toJson() : JsonString = json.encodeToString(serializer(), this)
+  fun toJson() = SerializationFormat.JSON.encodeToString<RevealConfiguration>(this)
 
 }
