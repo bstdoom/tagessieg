@@ -1,19 +1,20 @@
 #!/usr/bin/env just --justfile
 
-# private recipe to run gradle with common flags
-_run-gradle args:
+
+# runs the tagessieg cli with args, e.g. `tagessieg -q import-matches --file matches.json`
+[group('tagessieg')]
+tagessieg +args:
   @./gradlew run --quiet --console=plain --no-daemon --args="{{args}}"
 
 # import match from json file
 [group('tagessieg')]
 import-matches json_file:
-  @just _run-gradle "import-match --file "{{json_file}}""
+  @just tagessieg "import-match --file "{{json_file}}""
 
 # runs `tagessieg info`
 [group('tagessieg')]
 info +ARGS="":
-  @just _run-gradle info {{ARGS}}
-
+  @just tagessieg info {{ARGS}}
 
 build:
   ./gradlew -x test build

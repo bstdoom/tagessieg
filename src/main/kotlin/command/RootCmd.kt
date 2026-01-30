@@ -24,7 +24,7 @@ class RootCmd : CliktCommand(name = NAME) {
     help = "Suppress non-essential output, precedence over `--format`."
   ).flag(default = false)
   private val format: EchoFormat by option(
-    "--format",
+    "-f", "--format",
     help = "The output format for `echo()`, options are '${EchoFormat.entries.map { it.name.lowercase() }.joinToString()}', defaults to 'plain'."
   ).convert { EchoFormat.of(it) }.default(EchoFormat.PLAIN)
   private val workDir: Path by option(

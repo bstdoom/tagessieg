@@ -1,5 +1,6 @@
 package io.github.bstdoom.tagessieg.infrastructure
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.nio.file.Path
 import java.util.*
@@ -8,6 +9,7 @@ import kotlin.io.path.inputStream
 
 @Serializable
 data class TagessiegProperties(
+  @Contextual
   val mainCsvPath: Path
 ) {
 

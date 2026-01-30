@@ -12,10 +12,9 @@ import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.PLAIN
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.QUIET
 
 abstract class SubCommand(name: String) : CliktCommand(name) {
-  val quiet by option("-q", "--quiet", help = "Suppress output").flag()
   val ctx by requireObject<RootCtx>()
 
-  inline fun <reified T> echof(message: T, format: EchoFormat = if (quiet) QUIET else ctx.format) = when (format) {
+  inline fun <reified T> echof(message: T, format: EchoFormat = ctx.format) = when (format) {
     PLAIN -> echo(message = format.encode(message))
     ERROR -> echo(message = format.encode(message), err = true)
     QUIET -> Unit

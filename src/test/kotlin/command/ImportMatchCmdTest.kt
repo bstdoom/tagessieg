@@ -25,7 +25,7 @@ class ImportMatchCmdTest {
   fun `should respect quiet flag`() {
     val jsonPath = "src/test/resources/github/match-3873007996.json"
 
-    val result = cli.test("${ImportMatchCmd.NAME} --file $jsonPath --quiet")
+    val result = cli.test("--quiet ${ImportMatchCmd.NAME} --file $jsonPath")
 
     assertThat(result.statusCode).isEqualTo(0)
     assertThat(result.stdout).isEmpty()
