@@ -6,70 +6,67 @@ import kotlinx.serialization.Transient
 
 @Serializable
 data class LeagueTable(
-  val goalsJ: Int,
-  val goalsH: Int,
-  val j: Int,
-  val h: Int,
-  val x: Int,
-  val rows: List<Row> = emptyList()
+  val rows: List<Row>
 ) : Statistic {
   companion object : StatisticFactory {
     const val NAME = "league-table"
 
     override fun invoke(matches: Matches): LeagueTable {
-      matches.flatMap { listOf(it.game1, it.game2, it.game3) }.forEach { game ->
-        println("${game.winner} ${game.j} ${game.h}")
-      }
+      val p = matches.flatMap { listOf(it.game1, it.game2, it.game3) }
+        .fold(Row(J) to Row(H)) { p, g ->
+          p.copy(
+            first = p.first.copy(
+              goals = p.first.goals.copy(
+                first = p.first.goals.first + g.j,
+                second = p.first.goals.second + g.h,
+              ),
+              results = p.first.results.copy(
+                first = if (g.winner == p.first.player) p.first.results.first + 1 else p.first.results.first,
+                second = if (g.winner == X) p.first.results.second + 1 else p.first.results.second,
+                third = if (g.winner == p.second.player) p.first.results.third + 1 else p.first.results.third
+              )
+            ),
+            second = p.second.copy(
+              goals = p.second.goals.copy(
+                first = p.second.goals.first + g.h,
+                second = p.second.goals.second + g.j,
+              ),
+              results = p.second.results.copy(
+                first = if (g.winner == p.second.player) p.second.results.first + 1 else p.second.results.first,
+                second = if (g.winner == X) p.second.results.second + 1 else p.second.results.second,
+                third = if (g.winner == p.first.player) p.second.results.third + 1 else p.second.results.third
+              )
+            )
+          )
+        }
 
-      return matches.flatMap { listOf(it.game1, it.game2, it.game3) }.fold(
-        LeagueTable(0, 0, 0, 0, 0)
-      ) { table, game -> table + game }.copy(
-        rows = listOf(
-          Row(player = J, goals = Pair(0, 0)),
-          Row(player = H, goals = Pair(0, 0)),
-        )
+
+      return LeagueTable(
+        rows = listOf(p.first, p.second).sorted()
       )
     }
 
-    private operator fun LeagueTable.plus(game: Game): LeagueTable {
-      val c = this.copy(
-        goalsJ = goalsJ + (game.j),
-        goalsH = goalsH + (game.h),
-      )
-
-      return when (game.winner) {
-        H -> copy(h = h + 1)
-        J -> copy(j = j + 1)
-        X -> copy(x = x + 1)
-      }
-    }
 
   }
 
   @Serializable
   data class Row(
     val player: Player,
-    val goals: Pair<Int, Int>
-  )
+    val goals: Pair<Int, Int> = Pair(0, 0),
+    val results: Triple<Int, Int, Int> = Triple(0, 0, 0)
+  ) : Comparable<Row> {
+    override fun compareTo(other: Row): Int = Comparator
+      .comparingInt<Row> { it.points }
+      .thenComparingInt { it.goals.second - it.goals.first }
+      .thenComparingInt { it.goals.first }
+      .reversed()
+      .compare(this, other)
 
-  @Transient
-  val diff = goalsJ - goalsH
+    @Transient
+    val points = results.first * 3 + results.second
 
-  @Transient
-  val pointsJ = j * 3 + x
+    @Transient
+    val diff = goals.first - goals.second
 
-  @Transient
-  val pointsH = h * 3 + x
-
-  @Transient
-  val total = h + j + x
-
-
-//  Sp.
-//  s
-//  U
-//  N
-//  Tore
-//  Diff.
-//  Punkt
+  }
 }

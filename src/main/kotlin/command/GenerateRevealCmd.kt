@@ -1,9 +1,11 @@
 package io.github.bstdoom.tagessieg.command
 
 import dev.limebeck.revealkt.core.elements.HtmlDslElement
-import dev.limebeck.revealkt.dsl.*
+import dev.limebeck.revealkt.dsl.regular
+import dev.limebeck.revealkt.dsl.revealKt
 import dev.limebeck.revealkt.dsl.slides.regularSlide
 import dev.limebeck.revealkt.dsl.slides.verticalSlide
+import dev.limebeck.revealkt.dsl.smallTitle
 import io.github.bstdoom.tagessieg.infrastructure.MatchesCsv
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.render
 import io.github.bstdoom.tagessieg.model.statistic.GrandSlamCount
@@ -30,56 +32,6 @@ class GenerateRevealCmd : SubCommand(NAME) {
       slides {
         verticalSlide {
           regularSlide {
-            +smallTitle { "All time" }
-            +HtmlDslElement {
-              table {
-                thead {
-                  tr {
-                    th { +"J" }
-                    th { +"H" }
-                    th { +"X" }
-                  }
-                }
-                tbody {
-                  tr {
-                    td { +"${wins.j} (${grandslam.j})" }
-                    td { +"${wins.h} (${grandslam.h})" }
-                    td { +"${wins.x}" }
-                  }
-                }
-              }
-            }
-          }
-          regularSlide {
-            +smallTitle { "Per Game" }
-            +HtmlDslElement {
-              table {
-                thead {
-                  tr {
-                    th { +"#" }
-                    th { +"Name" }
-                    th { +"Points" }
-                    th { +"GD" }
-                  }
-                }
-                tbody {
-                  tr {
-                    td { +"${leagueTable.total})" }
-                    td { +"J" }
-                    td { +"${leagueTable.pointsJ})" }
-                    td { +"${leagueTable.goalsJ}:-${leagueTable.goalsH}" }
-                  }
-                  tr {
-                    td { +"${leagueTable.total})" }
-                    td { +"H" }
-                    td { +"${leagueTable.pointsH})" }
-                    td { +"${leagueTable.goalsH}:-${leagueTable.goalsJ}" }
-                  }
-                }
-              }
-            }
-          }
-          regularSlide {
             +HtmlDslElement {
               table {
                 thead {
@@ -91,11 +43,11 @@ class GenerateRevealCmd : SubCommand(NAME) {
                 tbody {
                   tr {
                     td { +"J" }
-                    td { +"${wins.j}" }
+                    td { +"${wins.j} (${grandslam.j})" }
                   }
                   tr {
                     td { +"H" }
-                    td { +"${wins.h}" }
+                    td { +"${wins.h} (${grandslam.h})" }
                   }
                   tr {
                     td { +"X" }
@@ -105,27 +57,46 @@ class GenerateRevealCmd : SubCommand(NAME) {
               }
             }
           }
-          regularSlide {
-            +smallTitle { "All time" }
 
-            +row {
-              column { +smallTitle { "J" } }
-              column { +smallTitle { "H" } }
-              column { +smallTitle { "X" } }
-            }
-            +row {
-              column { +smallTitle { "${wins.j}" } }
-              column { +smallTitle { "${wins.h}" } }
-              column { +smallTitle { "${wins.x}" } }
-            }
-          }
           regularSlide {
-            +smallTitle { "All time" }
+            +smallTitle { "Per Game" }
 
+            +HtmlDslElement {
+              table {
+                thead {
+                  tr {
+                    th { +"#" }
+                    th { +"Name" }
+                    th { +"S" }
+                    th { +"U" }
+                    th { +"N" }
+                    th { +"T" }
+                    th { +"+/-" }
+                    th { +"P" }
+                  }
+                }
+                tbody {
+                  leagueTable.rows.forEachIndexed { index, row ->
+                    tr {
+                      td { +"${index + 1}" }
+                      td { +"${row.player}" }
+                      td { +"${row.results.first}" }
+                      td { +"${row.results.second}" }
+                      td { +"${row.results.third}" }
+                      td { +"${row.goals.first}:${row.goals.second}" }
+                      td { +"${row.diff}" }
+                      td { +"${row.points}" }
+                    }
+                  }
+                }
+              }
+            }
+            +regular {
+              "Matches: ${wins.total}, Games: ${leagueTable.rows.first().results.first + leagueTable.rows.first().results.second + leagueTable.rows.first().results.third}"
+            }
           }
         }
       }
-
     }.render()
 
     target.writeText(reveal)
