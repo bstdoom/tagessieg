@@ -49,18 +49,13 @@ jobs:
           echo "Detected test scope: $IS_TEST"
 
 
-      - name: Create Statistics JSON
+      - name: Generate Reveal.js Presentation
         run: |
           if [[ "${{ steps.detect-scope.outputs.test }}" == "true" ]]; then
-            INPUT_FILE="docs/data/matches-test.csv"
+            just tagessieg -t reveal
           else
-            INPUT_FILE="docs/data/matches.csv"
+            just tagessieg -reveal
           fi
-          echo "Using input file: $INPUT_FILE"
-          just tagessieg create-statistics --inputFile "$INPUT_FILE"
-
-      - name: Generate Reveal.js Presentation
-        run: just tagessieg generate-reveal
 
       - name: Commit and Push
         run: |
