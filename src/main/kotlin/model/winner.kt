@@ -1,13 +1,18 @@
 package io.github.bstdoom.tagessieg.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 /**
  * Marks a human player.
  */
+@Serializable
 sealed interface Player : Winner
 
 /**
  * Shows who won the game. `J` and `H` are Players, `X` is a tie.
  */
+@Serializable
 sealed interface Winner {
   companion object {
     fun valueOf(value: String): Winner = when (value.uppercase()) {
@@ -19,8 +24,14 @@ sealed interface Winner {
   }
 }
 
+@Serializable
+@SerialName("J")
 data object J : Player
+@Serializable
+@SerialName("H")
 data object H : Player
+@Serializable
+@SerialName("X")
 data object X : Winner
 
 /**

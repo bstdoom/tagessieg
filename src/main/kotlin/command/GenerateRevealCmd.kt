@@ -6,6 +6,8 @@ import dev.limebeck.revealkt.dsl.slides.regularSlide
 import dev.limebeck.revealkt.dsl.slides.verticalSlide
 import io.github.bstdoom.tagessieg.infrastructure.MatchesCsv
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.render
+import io.github.bstdoom.tagessieg.model.statistic.GrandSlamCount
+import io.github.bstdoom.tagessieg.model.statistic.LeagueTable
 import io.github.bstdoom.tagessieg.model.statistic.TagessiegCount
 import kotlinx.html.*
 import kotlin.io.path.writeText
@@ -19,15 +21,63 @@ class GenerateRevealCmd : SubCommand(NAME) {
     val target = ctx.properties.indexHtml
     val alltime = MatchesCsv.invoke(ctx.csvPath).matches
 
-    val wins = TagessiegCount.invoke(alltime)
+    val wins = TagessiegCount(alltime)
+    val grandslam = GrandSlamCount(alltime)
+    val leagueTable = LeagueTable(alltime)
 
     val reveal = revealKt("KickOff2 - Statistics J vs H") {
 
       slides {
         verticalSlide {
           regularSlide {
-            +title { "All time" }
-            +img("kick-off-2-screen.jpg")
+            +smallTitle { "All time" }
+            +HtmlDslElement {
+              table {
+                thead {
+                  tr {
+                    th { +"J" }
+                    th { +"H" }
+                    th { +"X" }
+                  }
+                }
+                tbody {
+                  tr {
+                    td { +"${wins.j} (${grandslam.j})" }
+                    td { +"${wins.h} (${grandslam.h})" }
+                    td { +"${wins.x}" }
+                  }
+                }
+              }
+            }
+          }
+          regularSlide {
+            +smallTitle { "Per Game" }
+            +HtmlDslElement {
+              table {
+                thead {
+                  tr {
+                    th { +"#" }
+                    th { +"Name" }
+                    th { +"Points" }
+                    th { +"GD" }
+                  }
+                }
+                tbody {
+                  tr {
+                    td { +"${leagueTable.total})" }
+                    td { +"J" }
+                    td { +"${leagueTable.pointsJ})" }
+                    td { +"${leagueTable.goalsJ}:-${leagueTable.goalsH}" }
+                  }
+                  tr {
+                    td { +"${leagueTable.total})" }
+                    td { +"H" }
+                    td { +"${leagueTable.pointsH})" }
+                    td { +"${leagueTable.goalsH}:-${leagueTable.goalsJ}" }
+                  }
+                }
+              }
+            }
           }
           regularSlide {
             +HtmlDslElement {

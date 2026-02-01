@@ -1,9 +1,9 @@
 package io.github.bstdoom.tagessieg.model
 
-import kotlin.random.Random
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.random.Random
 
 @Serializable
 data class Match(
@@ -15,14 +15,17 @@ data class Match(
   val comment: String? = null
 ) : Comparable<Match> {
   companion object {
-    private val BY_DATE : Comparator<Match> = Comparator.comparing(Match::date)
+    private val BY_DATE: Comparator<Match> = Comparator.comparing(Match::date)
   }
 
   @Transient
-  val winner: Winner = listOf(game1, game2, game3).fold(X as Winner) { acc , g -> acc + g.winner }
+  val winner: Winner = listOf(game1, game2, game3).fold(X as Winner) { acc, g -> acc + g.winner }
 
   @Transient
   val grandSlam: Boolean = (listOf(game1, game2, game3).map(Game::winner).distinct().singleOrNull() ?: X) != X
+
+  @Transient
+  val goals: Pair<Int, Int> = listOf(game1, game2, game3).fold(0 to 0) { acc, g -> acc.first + g.j to acc.second + g.h }
 
   override fun toString() = """Match[${if (grandSlam) "$winner!" else winner}](date=$date, games=[$game1, $game2, $game3], comment=${comment ?: "n/a"})"""
 

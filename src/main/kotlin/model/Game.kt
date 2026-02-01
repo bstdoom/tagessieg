@@ -15,7 +15,7 @@ import kotlin.math.abs
  * Representation of a game result with team scores.
  */
 @Serializable(with = GameSerializer::class)
-data class Game(val h: Int, val j: Int) {
+data class Game(val j: Int, val h: Int) {
   companion object {
     /**
      * Parses colon‑separated string into game.
@@ -48,7 +48,7 @@ data object GameSerializer : KSerializer<Game> {
   override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Game", PrimitiveKind.STRING)
 
   override fun serialize(encoder: Encoder, value: Game) {
-    encoder.encodeString("${value.h}:${value.j}")
+    encoder.encodeString("${value.j}:${value.h}")
   }
 
   override fun deserialize(decoder: Decoder) = parse(decoder.decodeString())
