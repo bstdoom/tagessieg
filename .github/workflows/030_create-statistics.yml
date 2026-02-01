@@ -48,13 +48,12 @@ jobs:
           echo "test=$IS_TEST" >> $GITHUB_OUTPUT
           echo "Detected test scope: $IS_TEST"
 
-
       - name: Generate Reveal.js Presentation
         run: |
           if [[ "${{ steps.detect-scope.outputs.test }}" == "true" ]]; then
             just tagessieg -t reveal
           else
-            just tagessieg -reveal
+            just tagessieg reveal
           fi
 
       - name: Commit and Push
