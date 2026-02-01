@@ -13,7 +13,8 @@ data class RootCtx(
   @Contextual
   val workDir: Path,
   val properties: TagessiegProperties,
-  val dryRun: Boolean
+  val dryRun: Boolean,
+  val test: Boolean,
 ) {
   companion object {
   }
@@ -23,4 +24,7 @@ data class RootCtx(
 
   @Transient
   val quiet = format == EchoFormat.QUIET
+
+  @Transient
+  val csvPath = if (!test) properties.mainCsv else properties.testCsv
 }

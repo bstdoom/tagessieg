@@ -78,6 +78,9 @@ class ImportMatchCmd : SubCommand(NAME) {
       matchesCsv + match
       if (!ctx.quiet) {
         echo("Match with id ${match.id} added to $csvPath")
+        if (ctx.format == io.github.bstdoom.tagessieg.infrastructure.EchoFormat.CSV) {
+          echof(match)
+        }
       }
     }
   }

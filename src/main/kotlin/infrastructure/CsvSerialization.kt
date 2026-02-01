@@ -1,19 +1,15 @@
-package io.github.bstdoom.tagessieg.shared
+package io.github.bstdoom.tagessieg.infrastructure
 
 import io.github.bstdoom.tagessieg.model.Match
 import io.github.bstdoom.tagessieg.model.Matches
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.csv.Csv
 import java.io.RandomAccessFile
 import java.nio.file.Path
-import kotlin.io.path.appendText
-import kotlin.io.path.createParentDirectories
-import kotlin.io.path.exists
-import kotlin.io.path.readText
-import kotlin.io.path.writeText
+import kotlin.io.path.*
 
+@Deprecated("Use SerializationFormat and MatchesCsv instead")
 @OptIn(ExperimentalSerializationApi::class)
 data object CsvSerialization {
   fun encode(match: Match): String = encode(listOf(match))

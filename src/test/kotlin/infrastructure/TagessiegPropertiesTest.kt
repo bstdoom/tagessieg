@@ -9,11 +9,10 @@ import java.nio.file.Path
 
 class TagessiegPropertiesTest {
 
-    @Test
-    fun `should load properties starting with tagessieg`(@TempDir tempDir: Path) {
-        val gradleProps = tempDir.resolve("gradle.properties")
-        gradleProps.toFile().writeText("""
-            org.gradle.parallel=true
+  @Test
+  fun `should load properties starting with tagessieg`(@TempDir tempDir: Path) {
+    val gradleProps = tempDir.resolve("gradle.properties")
+    gradleProps.toFile().writeText("""
             tagessieg.data.matches.main=docs/data/matches.csv
             tagessieg.data.matches.test=docs/data/matches-test.csv
             tagessieg.config.daterange=2023-01-01,2023-01-31
@@ -21,29 +20,29 @@ class TagessiegPropertiesTest {
             other.prop=should.not.be.loaded
         """.trimIndent())
 
-        val properties = TagessiegProperties.read(tempDir)
+    val properties = TagessiegProperties.read(tempDir)
 
-        assertThat(properties.mainCsv).isEqualTo(Path.of("docs/data/matches.csv"))
-    }
+    assertThat(properties.mainCsv).isEqualTo(Path.of("docs/data/matches.csv"))
+  }
 
-    @Test
-    fun `should throw exception if required property is missing`(@TempDir tempDir: Path) {
-        val gradleProps = tempDir.resolve("gradle.properties")
-        gradleProps.toFile().writeText("""
+  @Test
+  fun `should throw exception if required property is missing`(@TempDir tempDir: Path) {
+    val gradleProps = tempDir.resolve("gradle.properties")
+    gradleProps.toFile().writeText("""
             tagessieg.config.daterange=2023-01-01,2026-12-31
             org.gradle.parallel=true
         """.trimIndent())
 
-        assertThatThrownBy {
-            TagessiegProperties.read(tempDir)
-        }.isInstanceOf(IllegalStateException::class.java)
-            .hasMessageContaining(PropertyKeys.DATA_CSV_MAIN)
-    }
+    assertThatThrownBy {
+      TagessiegProperties.read(tempDir)
+    }.isInstanceOf(IllegalStateException::class.java)
+      .hasMessageContaining(PropertyKeys.DATA_CSV_MAIN)
+  }
 
-    @Test
-    fun `should load from real project root`() {
-        // This assumes the test is run from project root and gradle.properties is there
-        val properties = TagessiegProperties.read()
-        assertThat(properties.mainCsv).isEqualTo(Path.of("docs/data/matches.csv"))
-    }
+  @Test
+  fun `should load from real project root`() {
+    // This assumes the test is run from project root and gradle.properties is there
+    val properties = TagessiegProperties.read()
+    assertThat(properties.mainCsv).isEqualTo(Path.of("docs/data/matches.csv"))
+  }
 }

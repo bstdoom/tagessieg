@@ -4,6 +4,7 @@ import io.github.bstdoom.tagessieg.infrastructure.TagessiegProperties
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.YearMonth
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
@@ -37,18 +38,21 @@ sealed interface LocalDateRange : ClosedRange<LocalDate>, Iterable<YearMonth> {
   }
 
   @Serializable
+  @SerialName("AllTime")
   data object AllTime : LocalDateRange {
     override val start: LocalDate = DATE_RANGE.start
     override val endInclusive: LocalDate = DATE_RANGE.endInclusive
   }
 
   @Serializable
+  @SerialName("None")
   data object None : LocalDateRange {
     override val start: LocalDate = LocalDate(0,1,1)
     override val endInclusive: LocalDate = LocalDate(0,1,1)
   }
 
   @Serializable
+  @SerialName("ByDate")
   data class ByDate(
     override val start: LocalDate,
     override val endInclusive: LocalDate,
@@ -62,6 +66,7 @@ sealed interface LocalDateRange : ClosedRange<LocalDate>, Iterable<YearMonth> {
   }
 
   @Serializable
+  @SerialName("ByYear")
   data class ByYear(val year: Int) : LocalDateRange {
     override val start: LocalDate = LocalDate(year, 1, 1)
     override val endInclusive: LocalDate = LocalDate(year, 12, 31)
@@ -71,6 +76,7 @@ sealed interface LocalDateRange : ClosedRange<LocalDate>, Iterable<YearMonth> {
   }
 
   @Serializable
+  @SerialName("ByMonth")
   data class ByMonth(val year: Int, val month: Month) : LocalDateRange {
 
     constructor(yearMonth: YearMonth) : this(yearMonth.year, yearMonth.month)
@@ -95,6 +101,7 @@ sealed interface LocalDateRange : ClosedRange<LocalDate>, Iterable<YearMonth> {
   }
 
   @Serializable
+  @SerialName("After")
   data class After(override val start: LocalDate) : LocalDateRange {
     override val endInclusive: LocalDate = DATE_RANGE.endInclusive
     init {
@@ -103,6 +110,7 @@ sealed interface LocalDateRange : ClosedRange<LocalDate>, Iterable<YearMonth> {
   }
 
   @Serializable
+  @SerialName("Before")
   data class Before(override val endInclusive: LocalDate) : LocalDateRange {
     override val start: LocalDate = DATE_RANGE.start
     init {
@@ -111,6 +119,7 @@ sealed interface LocalDateRange : ClosedRange<LocalDate>, Iterable<YearMonth> {
   }
 
   @Serializable
+  @SerialName("ByValues")
   data class ByValues(val values: List<LocalDate>) : LocalDateRange {
     constructor(vararg values: LocalDate) : this(values.toList())
 

@@ -48,6 +48,7 @@ jobs:
           echo "test=$IS_TEST" >> $GITHUB_OUTPUT
           echo "Detected test scope: $IS_TEST"
 
+
       - name: Create Statistics JSON
         run: |
           if [[ "${{ steps.detect-scope.outputs.test }}" == "true" ]]; then

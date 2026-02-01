@@ -4,12 +4,10 @@ import io.github.bstdoom.tagessieg.Fixtures
 import io.github.bstdoom.tagessieg.Fixtures._2026_01_22
 import io.github.bstdoom.tagessieg.Fixtures.match
 import io.github.bstdoom.tagessieg.model.Matches
-import io.github.bstdoom.tagessieg.shared.CsvSerialization
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
-import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 class CsvSerializationTest {

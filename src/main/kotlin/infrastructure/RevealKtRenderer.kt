@@ -1,7 +1,9 @@
 package io.github.bstdoom.tagessieg.infrastructure
 
 import dev.limebeck.revealkt.core.RevealKt
+import dev.limebeck.revealkt.core.RevealKtElement
 import dev.limebeck.revealkt.dsl.RevealKtBuilder
+import dev.limebeck.revealkt.utils.ID
 import io.github.bstdoom.tagessieg.HtmlString
 import io.github.bstdoom.tagessieg.JsonString
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.metaCharset
@@ -40,6 +42,14 @@ data class RevealKtRenderer(val presentation: RevealKt) : () -> HtmlString {
       fun FlowOrMetaDataOrPhrasingContent.metaTitle(title: String) = this.meta { name = "title"; content = title }
       fun FlowOrMetaDataOrPhrasingContent.metaDescription(description: String?) = description?.let {
         this.meta { name = "description"; content = it }
+      }
+
+      data class RevealTable(override val id: ID) : RevealKtElement {
+        override fun render(tag: HtmlBlockTag) = with(tag) {
+          table {
+
+          }
+        }
       }
     }
   }
@@ -94,8 +104,9 @@ data class RevealKtRenderer(val presentation: RevealKt) : () -> HtmlString {
           }
         }
 
-        script(src = "https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js") {}
-        script(src = "https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js") {}
+        script(src = "$CDN_REVEAL_HREF/dist/reveal.js") {}
+        script(src = "$CDN_REVEAL_HREF/plugin/markdown/markdown.js") {}
+        script(src = "$CDN_REVEAL_HREF/plugin/highlight/highlight.js") {}
         script {
           unsafe {
             +"""

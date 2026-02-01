@@ -22,6 +22,7 @@ repositories {
 }
 
 dependencies {
+  implementation(libs.kotlin.reflect)
   implementation(libs.cli.clikt)
 
   implementation(libs.kotlinx.html)

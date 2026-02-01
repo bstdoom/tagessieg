@@ -2,7 +2,6 @@ package io.github.bstdoom.tagessieg.command
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.obj
-import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
@@ -21,18 +20,26 @@ class RootCmd : CliktCommand(name = NAME) {
     "-q", "--quiet",
     help = "Suppress non-essential output, precedence over `--format`."
   ).flag(default = false)
+
   private val dryRun by option(
     "-n", "--dry-run",
     help = "Perform a trial run with no changes made."
   ).flag(default = false)
+
   private val format: EchoFormat by option(
     "-f", "--format",
     help = "The output format for `echo()`, options are '${EchoFormat.entries.map { it.name.lowercase() }.joinToString()}', defaults to 'plain'."
   ).convert { EchoFormat.of(it) }.default(EchoFormat.PLAIN)
+
   private val workDir: Path by option(
     "-w", "--workdir",
     help = "The workDir, relative base for all paths, defaults to '.'"
   ).convert { Path.of(it) }.default(Path.of("."))
+
+  private val test: Boolean by option(
+    "-t", "--test",
+    help = "Test mode"
+  ).flag(default = false)
 
   override fun run() {
     // Set context once with global options and properties
@@ -40,7 +47,8 @@ class RootCmd : CliktCommand(name = NAME) {
       workDir = workDir,
       properties = TagessiegProperties.read(workDir),
       format = if (quiet) EchoFormat.QUIET else format,
-      dryRun = dryRun
+      dryRun = dryRun,
+      test = test
     )
   }
 

@@ -2,7 +2,6 @@ package io.github.bstdoom.tagessieg.infrastructure
 
 import io.github.bstdoom.tagessieg.model.Match
 import io.github.bstdoom.tagessieg.model.Matches
-import io.github.bstdoom.tagessieg.shared.CsvSerialization
 import kotlinx.serialization.builtins.ListSerializer
 import java.nio.file.Path
 import kotlin.io.path.createParentDirectories
