@@ -27,7 +27,7 @@ class StatisticTest {
 
     val statistics = StatisticFactories.ALL(matches)
 
-    assertThat(statistics).hasSize(1)
+    assertThat(statistics).hasSize(3)
     val tagessiegCount = statistics.filterIsInstance<TagessiegCount>().first()
     assertThat(tagessiegCount.j).isEqualTo(1)
     assertThat(tagessiegCount.h).isEqualTo(1)

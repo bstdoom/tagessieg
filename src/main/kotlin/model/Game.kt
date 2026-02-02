@@ -28,7 +28,7 @@ data class Game(val j: Int, val h: Int) {
   }
 
   init {
-    require(h >= 0 && j >= 0) { "Scores cannot be negative: [$h:$j]" }
+    require(h >= 0 && j >= 0) { "Scores cannot be negative: [$j:$h]" }
   }
 
   @Transient
@@ -36,12 +36,12 @@ data class Game(val j: Int, val h: Int) {
 
   @Transient
   val winner: Winner = when {
-    h > j -> J
-    h < j -> H
+    h > j -> H
+    h < j -> J
     else -> X
   }
 
-  override fun toString() = "$h:$j[${winner}]"
+  override fun toString() = "$j:$h[${winner}]"
 }
 
 data object GameSerializer : KSerializer<Game> {

@@ -72,12 +72,12 @@ class ImportMatchCmd : SubCommand(NAME) {
     val absoluteCsvPath = ctx.workDir.resolve(csvPath)
 
     if (ctx.dryRun) {
-      echo("Dry run: match with id ${match.id} would be added to $csvPath")
+      echo("Dry run: match with id ${match.id} would be added to ${csvPath.fileName}")
     } else {
       val matchesCsv = MatchesCsv(absoluteCsvPath)
       matchesCsv + match
       if (!ctx.quiet) {
-        echo("Match with id ${match.id} added to $csvPath")
+        echo("Match with id ${match.id} added to ${csvPath.fileName}")
         if (ctx.format == io.github.bstdoom.tagessieg.infrastructure.EchoFormat.CSV) {
           echof(match)
         }

@@ -1,105 +1,118 @@
 package io.github.bstdoom.tagessieg.command
 
-import dev.limebeck.revealkt.core.elements.HtmlDslElement
+import dev.limebeck.revealkt.dsl.SlidesHolder
+import dev.limebeck.revealkt.dsl.code
 import dev.limebeck.revealkt.dsl.regular
 import dev.limebeck.revealkt.dsl.revealKt
 import dev.limebeck.revealkt.dsl.slides.regularSlide
 import dev.limebeck.revealkt.dsl.slides.verticalSlide
-import dev.limebeck.revealkt.dsl.smallTitle
+import dev.limebeck.revealkt.dsl.title
 import io.github.bstdoom.tagessieg.infrastructure.MatchesCsv
+import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.RevealTable
+import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.html
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.render
+import io.github.bstdoom.tagessieg.infrastructure.SerializationFormat
+import io.github.bstdoom.tagessieg.model.Match
+import io.github.bstdoom.tagessieg.model.Matches
 import io.github.bstdoom.tagessieg.model.statistic.GrandSlamCount
 import io.github.bstdoom.tagessieg.model.statistic.LeagueTable
 import io.github.bstdoom.tagessieg.model.statistic.TagessiegCount
-import kotlinx.html.*
+import io.github.bstdoom.tagessieg.model.type.LocalDateRange
+import kotlinx.css.small
+import kotlinx.html.small
+import kotlinx.serialization.builtins.ListSerializer
+import java.text.DateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.io.path.writeText
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 class GenerateRevealCmd : SubCommand(NAME) {
   companion object {
     const val NAME = "reveal"
   }
 
-  override fun run() {
-    val target = ctx.properties.indexHtml
-    val alltime = MatchesCsv.invoke(ctx.csvPath).matches
+  private val GERMAN_DATE_TIME = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
 
-    val wins = TagessiegCount(alltime)
-    val grandslam = GrandSlamCount(alltime)
-    val leagueTable = LeagueTable(alltime)
+  override fun run() {
+    val csv = MatchesCsv(ctx.csvPath)
+    val target = ctx.properties.indexHtml
+
 
     val reveal = revealKt("KickOff2 - Statistics J vs H") {
 
       slides {
-        verticalSlide {
-          regularSlide {
-            +HtmlDslElement {
-              table {
-                thead {
-                  tr {
-                    th { +"Player" }
-                    th { +"Wins" }
-                  }
-                }
-                tbody {
-                  tr {
-                    td { +"J" }
-                    td { +"${wins.j} (${grandslam.j})" }
-                  }
-                  tr {
-                    td { +"H" }
-                    td { +"${wins.h} (${grandslam.h})" }
-                  }
-                  tr {
-                    td { +"X" }
-                    td { +"${wins.x}" }
-                  }
-                }
-              }
-            }
-          }
-
-          regularSlide {
-            +smallTitle { "Per Game" }
-
-            +HtmlDslElement {
-              table {
-                thead {
-                  tr {
-                    th { +"#" }
-                    th { +"Name" }
-                    th { +"S" }
-                    th { +"U" }
-                    th { +"N" }
-                    th { +"T" }
-                    th { +"+/-" }
-                    th { +"P" }
-                  }
-                }
-                tbody {
-                  leagueTable.rows.forEachIndexed { index, row ->
-                    tr {
-                      td { +"${index + 1}" }
-                      td { +"${row.player}" }
-                      td { +"${row.results.first}" }
-                      td { +"${row.results.second}" }
-                      td { +"${row.results.third}" }
-                      td { +"${row.goals.first}:${row.goals.second}" }
-                      td { +"${row.diff}" }
-                      td { +"${row.points}" }
-                    }
-                  }
-                }
-              }
-            }
-            +regular {
-              "Matches: ${wins.total}, Games: ${leagueTable.rows.first().results.first + leagueTable.rows.first().results.second + leagueTable.rows.first().results.third}"
-            }
-          }
-        }
+        statisticVertical(matches = csv[LocalDateRange.AllTime])
+        statisticVertical(matches = csv[LocalDateRange.ByYear(2026)])
+        statisticVertical(matches = csv[LocalDateRange.ByYear(2025)])
+        statisticVertical(matches = csv[LocalDateRange.ByYear(2024)])
+        statisticVertical(matches = csv[LocalDateRange.ByYear(2023)])
       }
     }.render()
 
     target.writeText(reveal)
     echo("Reveal file written to $target")
   }
+
+  fun SlidesHolder.statisticVertical(matches: Matches) {
+    val title = when (matches.filteredRange) {
+      LocalDateRange.AllTime -> "All Time"
+      is LocalDateRange.ByYear -> "Year ${matches.filteredRange.year}"
+      else -> matches.filteredRange.toString()
+    }
+
+    val wins = TagessiegCount(matches)
+    val grandslam = GrandSlamCount(matches)
+    val leagueTable = LeagueTable(matches)
+
+
+    return verticalSlide {
+      regularSlide {
+        +title { "Tagessieg $title" }
+        +RevealTable(
+          header = listOf("Player", "Wins"),
+          rows = listOf(
+            listOf("J", "${wins.j} (${grandslam.j})"),
+            listOf("H", "${wins.h} (${grandslam.h})"),
+            listOf("X", "${wins.x}")
+          )
+        )
+        +html {
+          small {
+            +"Stand: ${GERMAN_DATE_TIME.format(LocalDateTime.now())}"
+          }
+        }
+      }
+
+      regularSlide {
+        +title { "Liga $title" }
+        +RevealTable(
+          header = listOf("#", "Name", "S", "U", "N", "T", "+/-", "P"),
+          rows = leagueTable.rows.mapIndexed { index, row ->
+            listOf(
+              "${index + 1}",
+              "${row.player}",
+              "${row.results.first}",
+              "${row.results.second}",
+              "${row.results.third}",
+              "${row.goals.first}:${row.goals.second}",
+              "${row.diff}",
+              "${row.points}"
+            )
+          }
+        )
+        +regular {
+          "Matches: ${wins.total}, Games: ${leagueTable.rows.first().results.first + leagueTable.rows.first().results.second + leagueTable.rows.first().results.third}"
+        }
+      }
+      regularSlide {
+        +title { "Data $title" }
+        +code(lang = "csv") {
+          SerializationFormat.CSV.encodeToString(ListSerializer(Match.serializer()), matches.toList())
+        }
+      }
+    }
+  }
 }
+

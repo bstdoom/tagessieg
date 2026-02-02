@@ -12,7 +12,7 @@ class GenerateRevealCmdTest {
 
   @Test
   fun `run cmd`() {
-    val result = cli.test(NAME)
+    val result = cli.test("-n", NAME)
     assertThat(result.statusCode).isEqualTo(0)
   }
 }

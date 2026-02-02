@@ -1,7 +1,10 @@
 package io.github.bstdoom.tagessieg.model.statistic
 
 import io.github.bstdoom.tagessieg.Fixtures
+import io.github.bstdoom.tagessieg.model.H
+import io.github.bstdoom.tagessieg.model.J
 import io.github.bstdoom.tagessieg.model.Matches
+import io.github.bstdoom.tagessieg.model.X
 import io.github.bstdoom.tagessieg.model.type.LocalDateRange
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
@@ -39,5 +42,25 @@ class TagessiegCountTest {
 
     val decoded = Json.Default.decodeFromString(ListSerializer(Statistic.serializer()), json)
     assertThat(decoded).isEqualTo(stats)
+  }
+
+  @Test
+  fun `calc first 7 games of 2026 correctly`() {
+    val matches = Matches(
+      Fixtures.match("2026-01-02","3:0","2:3","0:2"), // H
+      Fixtures.match("2026-01-09","2:3","1:3","1:1"), // H
+      Fixtures.match("2026-01-16","2:2","0:2","3:0"), // X
+      Fixtures.match("2026-01-23","2:3","3:1","2:3"), // H
+      Fixtures.match("2026-01-23","2:2","1:1","2:1"), // J
+      Fixtures.match("2026-01-30","2:2","4:2","2:5"), // X
+      Fixtures.match("2026-01-30","0:2","3:4","3:2"), // H
+    )
+
+    assertThat(matches.map { it.winner }).containsExactly(H, H, X, H, J, X, H)
+    val stats = TagessiegCount(matches)
+
+    assertThat(stats.j).isEqualTo(1)
+    assertThat(stats.h).isEqualTo(4)
+    assertThat(stats.x).isEqualTo(2)
   }
 }

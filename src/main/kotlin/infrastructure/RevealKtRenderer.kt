@@ -2,8 +2,10 @@ package io.github.bstdoom.tagessieg.infrastructure
 
 import dev.limebeck.revealkt.core.RevealKt
 import dev.limebeck.revealkt.core.RevealKtElement
+import dev.limebeck.revealkt.core.elements.HtmlDslElement
 import dev.limebeck.revealkt.dsl.RevealKtBuilder
 import dev.limebeck.revealkt.utils.ID
+import dev.limebeck.revealkt.utils.UuidGenerator
 import io.github.bstdoom.tagessieg.HtmlString
 import io.github.bstdoom.tagessieg.JsonString
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.metaCharset
@@ -44,10 +46,27 @@ data class RevealKtRenderer(val presentation: RevealKt) : () -> HtmlString {
         this.meta { name = "description"; content = it }
       }
 
-      data class RevealTable(override val id: ID) : RevealKtElement {
+      fun html(builder: HtmlBlockTag.() -> Unit) = HtmlDslElement(builder=builder)
+
+      data class RevealTable(
+        override val id: ID = UuidGenerator.generateId(),
+        val header: List<String>,
+        val rows: Iterable<List<String>>,
+      ) : RevealKtElement {
         override fun render(tag: HtmlBlockTag) = with(tag) {
           table {
-
+            thead {
+              tr {
+                header.forEach { th { +it } }
+              }
+            }
+            tbody {
+              rows.forEach { row ->
+                tr {
+                  row.forEach { td { +it } }
+                }
+              }
+            }
           }
         }
       }

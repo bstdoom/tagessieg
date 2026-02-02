@@ -1,8 +1,8 @@
 package io.github.bstdoom.tagessieg.model
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.converter.ArgumentConverter
@@ -22,22 +22,22 @@ class GameTest {
 
   @Test
   fun `parses score string`() {
-    val result = Game.Companion.parse("3:1")
-    assertThat(result.h).isEqualTo(3)
-    assertThat(result.j).isEqualTo(1)
+    val result = Game.parse("3:1")
+    assertThat(result.j).isEqualTo(3)
+    assertThat(result.h).isEqualTo(1)
   }
 
   @Test
   fun `parses score string with spaces`() {
-    val result = Game.Companion.parse(" 2 : 4 ")
-    assertThat(result.h).isEqualTo(2)
-    assertThat(result.j).isEqualTo(4)
+    val result = Game.parse(" 2 : 4 ")
+    assertThat(result.j).isEqualTo(2)
+    assertThat(result.h).isEqualTo(4)
   }
 
   @ParameterizedTest
   @CsvSource("3:1,J", "1:3,H", "2:2,X")
   fun `determines result correctly`(goals: String, @ConvertWith(WinnerConverter::class) expected: Winner) {
-    assertThat(Game.Companion.parse(goals).winner).isEqualTo(expected)
+    assertThat(Game.parse(goals).winner).isEqualTo(expected)
   }
 
   @Test
@@ -47,9 +47,8 @@ class GameTest {
 
   @Test
   fun `throws exception on invalid input`() {
-    assertThrows<Exception> {
-      Game.Companion.parse("invalid")
-    }
+    assertThatThrownBy { Game.parse("invalid") }
+      .isInstanceOf(IllegalArgumentException::class.java)
   }
 
   @ParameterizedTest

@@ -3,7 +3,7 @@ package io.github.bstdoom.tagessieg.model.statistic
 import io.github.bstdoom.tagessieg.model.H
 import io.github.bstdoom.tagessieg.model.J
 import io.github.bstdoom.tagessieg.model.Matches
-import io.github.bstdoom.tagessieg.model.statistic.TagessiegCount.Companion.NAME
+import io.github.bstdoom.tagessieg.model.statistic.GrandSlamCount.Companion.NAME
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient

@@ -17,12 +17,13 @@ class Matches private constructor(
     operator fun invoke(
       value: List<Match>,
       range: LocalDateRange = LocalDateRange.AllTime
-    ): Matches = Matches(value.sorted(), range)
+    ): Matches = Matches(value.sorted().filter { it.date in range }, range)
 
     operator fun invoke(
       vararg value: Match
     ): Matches = invoke(value.toList(), range = LocalDateRange.AllTime)
   }
+
 
 
   fun filter(filter: MatchFilter) = Matches(sortedValue.filter { filter.test(it) }, filteredRange)

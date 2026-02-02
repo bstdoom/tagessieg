@@ -2,6 +2,7 @@ package io.github.bstdoom.tagessieg.infrastructure
 
 import io.github.bstdoom.tagessieg.model.Match
 import io.github.bstdoom.tagessieg.model.Matches
+import io.github.bstdoom.tagessieg.model.type.LocalDateRange
 import kotlinx.serialization.builtins.ListSerializer
 import java.nio.file.Path
 import kotlin.io.path.createParentDirectories
@@ -50,5 +51,7 @@ class MatchesCsv(
   override fun toString(): String {
     return "MatchesCsv(matches=$matches, file=$file)"
   }
+
+  operator fun get(range: LocalDateRange): Matches = Matches(matches.toList(), range)
 }
 

@@ -2,7 +2,6 @@ package io.github.bstdoom.tagessieg.model.statistic
 
 import io.github.bstdoom.tagessieg.model.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 @Serializable
 data class LeagueTable(
@@ -40,7 +39,6 @@ data class LeagueTable(
           )
         }
 
-
       return LeagueTable(
         rows = listOf(p.first, p.second).sorted()
       )
@@ -62,11 +60,15 @@ data class LeagueTable(
       .reversed()
       .compare(this, other)
 
-    @Transient
-    val points = results.first * 3 + results.second
+    val points by lazy {
+      results.first * 3 + results.second
+    }
 
-    @Transient
-    val diff = goals.first - goals.second
+    val diff by lazy {
+      goals.first - goals.second
+    }
 
   }
+
+  operator fun get(player: Player): Row = rows.find { it.player == player } ?: throw IllegalStateException("Player $player not found in league table.")
 }

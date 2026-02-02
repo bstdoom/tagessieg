@@ -18,8 +18,16 @@ data class Match(
     private val BY_DATE: Comparator<Match> = Comparator.comparing(Match::date)
   }
 
-  @Transient
-  val winner: Winner = listOf(game1, game2, game3).fold(X as Winner) { acc, g -> acc + g.winner }
+  val winner: Winner  by lazy  {
+    val wins = listOf(game1.winner, game2.winner, game3.winner)
+    val jWins = wins.count { it == J }
+    val hWins = wins.count { it == H }
+    when {
+      jWins > hWins -> J
+      hWins > jWins -> H
+      else -> X
+    }
+  }
 
   @Transient
   val grandSlam: Boolean = (listOf(game1, game2, game3).map(Game::winner).distinct().singleOrNull() ?: X) != X

@@ -7,6 +7,7 @@ import dev.limebeck.revealkt.dsl.slides.regularSlide
 import dev.limebeck.revealkt.dsl.title
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.render
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 import kotlin.io.path.writeText
 
@@ -14,7 +15,7 @@ import kotlin.io.path.writeText
 class RevealKtRendererTest {
 
   @Test
-  fun `render html`() {
+  fun `render html`(@TempDir tempDir: Path) {
     val html = revealKt("MyPresentation") {
       meta {
         title = "My Presentation"
@@ -75,6 +76,6 @@ class RevealKtRendererTest {
 
     println(html)
 
-    Path.of("docs", "index.html").writeText(html)
+    tempDir.resolve("index.html").writeText(html)
   }
 }

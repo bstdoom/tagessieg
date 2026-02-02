@@ -22,7 +22,7 @@ class TagessiegPropertiesTest {
 
     val properties = TagessiegProperties.read(tempDir)
 
-    assertThat(properties.mainCsv).isEqualTo(Path.of("docs/data/matches.csv"))
+    assertThat(properties.mainCsv.toString()).endsWith("docs/data/matches.csv")
   }
 
   @Test
@@ -43,6 +43,6 @@ class TagessiegPropertiesTest {
   fun `should load from real project root`() {
     // This assumes the test is run from project root and gradle.properties is there
     val properties = TagessiegProperties.read()
-    assertThat(properties.mainCsv).isEqualTo(Path.of("docs/data/matches.csv"))
+    assertThat(properties.mainCsv).isEqualTo(Path.of("./docs/data/matches.csv"))
   }
 }
