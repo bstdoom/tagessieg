@@ -19,7 +19,7 @@ class RootCmd : CliktCommand(name = NAME) {
 
   private val workDirectory: Path by option(
     "-w", "--workdir",
-    help = "The workDir, relative base for all paths, defaults to '.'"
+    help = "The workDir, relative base for all paths, defaults to './build/out'"
   ).convert { Path.of(it) }.default(Path.of("build/out"))
 
   private val quiet by option(

@@ -8,36 +8,15 @@ on:
 
 jobs:
   import-match:
-    # only run if the issue has the 'spieltag' label
     if: contains(github.event.issue.labels.*.name, 'spieltag') && github.event.issue.state == 'closed'
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      # Check out the repo - main branch
-      - uses: actions/checkout@v4
-
-      # Setup Java
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'gradle'
-
-      # Setup Gradle
-      - name: Validate Gradle Wrapper
-        run: ./gradlew --version
-      # Setup just
-      - name: Setup just
-        uses: extractions/setup-just@v3
+      - name: Setup
+        uses: .github/actions/setup
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          just-version: '1.46.0'
-
-      - name: Install just
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y just
 
       # 1. Read the issue and comments from GitHub and write them to match.json
       - name: Parse Event and Comments - Provide match.json
@@ -48,6 +27,8 @@ jobs:
           COMMENTS_JSON=$(gh issue view ${{ github.event.issue.number }} --json comments)
           echo "$EVENT_JSON" > event.json
           echo "$COMMENTS_JSON" > comments.json
+          cat event.json
+          cat comments.json
           jq -n --slurpfile event event.json --slurpfile comments comments.json '{
             id: $event[0].issue.id,
             title: $event[0].issue.title,
@@ -61,7 +42,7 @@ jobs:
 
       # 2. Run the import-match command
       - name: Import Match to CSV
-        run: just tagessieg import-match --file match.json
+        run: just tagessieg import -i match.json
 
       # 3. Commit and Push changes
       - name: Commit and Push

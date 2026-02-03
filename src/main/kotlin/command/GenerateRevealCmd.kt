@@ -28,7 +28,7 @@ import kotlin.io.path.writeText
 import kotlin.time.Clock
 import kotlin.time.Instant
 
-class GenerateRevealCmd : SubCommand(NAME) {
+class GenerateRevealCmd : SubCommand(name = NAME, help = "Generate a reveal.js presentation from the matches data.") {
   companion object {
     const val NAME = "reveal"
   }
@@ -36,9 +36,9 @@ class GenerateRevealCmd : SubCommand(NAME) {
   private val GERMAN_DATE_TIME = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
 
   override fun run() {
-    val csv = MatchesCsv(ctx.csvPath)
-    val target = ctx.properties.indexHtml
-
+    val matchesCsv = ctx.workDir.resolve("data/matches.csv")
+    val csv = MatchesCsv(file=matchesCsv, createIfMissing = false)
+    val target = ctx.workDir.resolve("index.html")
 
     val reveal = revealKt("KickOff2 - Statistics J vs H") {
 

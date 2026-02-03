@@ -1,0 +1,31 @@
+name: 'Setup Tagessieg'
+description: 'Standard setup for Tagessieg workflows (Checkout, Java, Gradle, Just)'
+inputs:
+  java-version:
+    description: 'Java version to use'
+    default: '21'
+  just-version:
+    description: 'Just version to use'
+    default: '1.46.0'
+  github-token:
+    description: 'GitHub Token for setup-just'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: ${{ inputs.java-version }}
+        cache: 'gradle'
+
+    - name: Setup Just
+      uses: extractions/setup-just@v3
+      with:
+        github-token: ${{ inputs.github-token }}
+        just-version: ${{ inputs.just-version }}

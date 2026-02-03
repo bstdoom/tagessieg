@@ -9,9 +9,15 @@ import java.nio.file.Path
 
 @Serializable
 data class RootCtx(
-  val format: EchoFormat,
+
+  @Contextual
+  val rootDir: Path,
+
   @Contextual
   val workDir: Path,
+
+  val format: EchoFormat,
+
   val properties: TagessiegProperties,
   val dryRun: Boolean,
   val test: Boolean,

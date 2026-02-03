@@ -1,7 +1,9 @@
 package io.github.bstdoom.tagessieg.command
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.core.requireObject
+import com.github.ajalt.clikt.core.theme
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat
@@ -11,7 +13,7 @@ import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.JSON
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.PLAIN
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.QUIET
 
-abstract class SubCommand(name: String) : CliktCommand(name) {
+abstract class SubCommand(name: String, private val help: String = "") : CliktCommand(name= name) {
   val ctx by requireObject<RootCtx>()
 
   inline fun <reified T> echof(message: T, format: EchoFormat = ctx.format) = when (format) {
@@ -27,4 +29,6 @@ abstract class SubCommand(name: String) : CliktCommand(name) {
       }
     }
   }
+
+  override fun help(context: Context): String = context.theme.info(help)
 }

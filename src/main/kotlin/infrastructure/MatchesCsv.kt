@@ -4,6 +4,7 @@ import io.github.bstdoom.tagessieg.model.Match
 import io.github.bstdoom.tagessieg.model.Matches
 import io.github.bstdoom.tagessieg.model.type.LocalDateRange
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.csv.Csv
 import java.nio.file.Path
 import kotlin.io.path.createParentDirectories
 import kotlin.io.path.exists
@@ -19,8 +20,11 @@ class MatchesCsv(
 ) {
 
   companion object {
-    operator fun invoke(file: Path): MatchesCsv {
+    private val serializer = ListSerializer(Match.serializer())
+
+    operator fun invoke(file: Path, createIfMissing: Boolean = true): MatchesCsv {
       if (!file.exists()) {
+        require(createIfMissing) { "File does not exist and createIfMissing is false" }
         if (file.parent != null) {
           file.createParentDirectories()
         }
@@ -33,14 +37,17 @@ class MatchesCsv(
         matches = if (content.isBlank()) {
           Matches()
         } else {
-          Matches(SerializationFormat.CSV.decodeFromString(ListSerializer(Match.serializer()), content))
+          Matches(decode(content))
         }
       )
     }
+
+    fun encode(matches: Iterable<Match>): String = SerializationFormat.CSVH.encodeToString(serializer, matches.toList()) + "\n"
+    fun decode(content: String): List<Match> = SerializationFormat.CSVH.decodeFromString(serializer, content)
   }
 
   fun save(): MatchesCsv {
-    CsvSerialization.encodeToPath(file, matches)
+    file.writeText(encode(matches.toList()), Charsets.UTF_8)
     return this
   }
 
@@ -49,7 +56,7 @@ class MatchesCsv(
   }
 
   override fun toString(): String {
-    return "MatchesCsv(matches=$matches, file=$file)"
+    return "MatchesCsv(file=$file, matches=$matches)"
   }
 
   operator fun get(range: LocalDateRange): Matches = Matches(matches.toList(), range)
