@@ -28,7 +28,7 @@ data class TagessiegProperties(
   }
 
   companion object {
-    private const val GRADLE_PROPERTIES_FILE = "gradle.properties"
+    private const val APPLICATION_PROPERTIES_FILE = "application.properties"
 
     internal data object PropertyKeys {
       const val DOCS_INDEX = "tagessieg.docs.index"
@@ -39,20 +39,41 @@ data class TagessiegProperties(
 
     fun Properties.getRequired(key: String): String = getProperty(key) ?: throw IllegalStateException("Property '${key}' is required in gradle.properties")
 
-    fun read(rootPath: Path = Path.of(".")): TagessiegProperties {
+    fun read(rootPath: Path? = null): TagessiegProperties {
       val props = Properties()
-      val gradlePropsFile = rootPath.resolve(GRADLE_PROPERTIES_FILE)
-      if (gradlePropsFile.exists()) {
-        gradlePropsFile.inputStream().use { props.load(it) }
+      val propertyFileName = APPLICATION_PROPERTIES_FILE
+
+      val loaded = if (rootPath != null) {
+        val file = rootPath.resolve(propertyFileName)
+        if (file.exists()) {
+          file.inputStream().use { props.load(it) }
+          true
+        } else false
+      } else {
+        val inputStream = Companion::class.java.classLoader.getResourceAsStream(propertyFileName)
+        if (inputStream != null) {
+          inputStream.use { props.load(it) }
+          true
+        } else false
       }
 
-      val (start, end) = props.getRequired(PropertyKeys.CONFIG_DATE_UPPER_BOUND).split(",", limit = 2)
+      if (!loaded) {
+        // Fallback for tests or when application.properties is missing
+        props.setProperty(PropertyKeys.DOCS_INDEX, "index.html")
+        props.setProperty(PropertyKeys.DATA_CSV_MAIN, "data/matches.csv")
+        props.setProperty(PropertyKeys.DATA_CSV_TEST, "data/matches-test.csv")
+        props.setProperty(PropertyKeys.CONFIG_DATE_UPPER_BOUND, "2023-01-01,2026-12-31")
+      }
 
+      val configDateRange = props.getProperty(PropertyKeys.CONFIG_DATE_UPPER_BOUND)
+      val (start, end) = configDateRange.split(",", limit = 2)
+
+      val resolveRoot = rootPath ?: Path.of(".")
 
       return TagessiegProperties(
-        indexHtml = rootPath.resolve(props.getProperty(PropertyKeys.DOCS_INDEX) ?: "docs/index.html"),
-        mainCsv = rootPath.resolve(props.getRequired(PropertyKeys.DATA_CSV_MAIN)),
-        testCsv = rootPath.resolve(props.getRequired(PropertyKeys.DATA_CSV_TEST)),
+        indexHtml = resolveRoot.resolve(props.getProperty(PropertyKeys.DOCS_INDEX) ?: "index.html"),
+        mainCsv = resolveRoot.resolve(props.getRequired(PropertyKeys.DATA_CSV_MAIN)),
+        testCsv = resolveRoot.resolve(props.getRequired(PropertyKeys.DATA_CSV_TEST)),
         configuration = Configuration(
           activeDateRange = LocalDateRange.ByDate(LocalDate.parse(start), LocalDate.parse(end), false)
         )

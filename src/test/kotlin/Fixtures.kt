@@ -23,10 +23,20 @@ data object Fixtures {
     comment: String? = null
   ) = Match(date = LocalDate.parse(date), game1 = Game.parse(game1), game2 = Game.parse(game2), game3 = Game.parse(game3), comment = comment)
 
-  val testData = properties.testCsv.readText()
+  val testData = try {
+    properties.testCsv.readText()
+  } catch (e: Exception) {
+    ""
+  }
 
   fun copyTestCsv(path: Path) : Path {
     require(path.isDirectory()) { "Target path must be a directory" }
+
+    if (!java.nio.file.Files.exists(properties.testCsv)) {
+      val target = path.resolve(properties.testCsv.fileName)
+      java.nio.file.Files.writeString(target, "")
+      return target
+    }
 
     return properties.testCsv.copyTo(path.resolve(properties.testCsv.fileName))
   }

@@ -16,6 +16,11 @@ class RootCmd : CliktCommand(name = NAME) {
     const val NAME = "tagessieg"
   }
 
+  private val workDirectory: Path by option(
+    "-w", "--workdir",
+    help = "The workDir, relative base for all paths, defaults to '.'"
+  ).convert { Path.of(it) }.default(Path.of("build/out"))
+
   private val quiet by option(
     "-q", "--quiet",
     help = "Suppress non-essential output, precedence over `--format`."
@@ -31,11 +36,6 @@ class RootCmd : CliktCommand(name = NAME) {
     help = "The output format for `echo()`, options are '${EchoFormat.entries.map { it.name.lowercase() }.joinToString()}', defaults to 'plain'."
   ).convert { EchoFormat.of(it) }.default(EchoFormat.PLAIN)
 
-  private val workDir: Path by option(
-    "-w", "--workdir",
-    help = "The workDir, relative base for all paths, defaults to '.'"
-  ).convert { Path.of(it) }.default(Path.of("."))
-
   private val test: Boolean by option(
     "-t", "--test",
     help = "Test mode"
@@ -44,8 +44,8 @@ class RootCmd : CliktCommand(name = NAME) {
   override fun run() {
     // Set context once with global options and properties
     currentContext.obj = RootCtx(
-      workDir = workDir,
-      properties = TagessiegProperties.read(workDir),
+      workDir = workDirectory,
+      properties = TagessiegProperties.read(workDirectory),
       format = if (quiet) EchoFormat.QUIET else format,
       dryRun = dryRun,
       test = test
@@ -53,4 +53,5 @@ class RootCmd : CliktCommand(name = NAME) {
   }
 
   override val invokeWithoutSubcommand: Boolean = true
+  override val allowMultipleSubcommands: Boolean = true
 }

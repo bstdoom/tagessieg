@@ -6,8 +6,6 @@ import dev.limebeck.revealkt.core.elements.HtmlDslElement
 import dev.limebeck.revealkt.dsl.RevealKtBuilder
 import dev.limebeck.revealkt.utils.ID
 import dev.limebeck.revealkt.utils.UuidGenerator
-import io.github.bstdoom.tagessieg.HtmlString
-import io.github.bstdoom.tagessieg.JsonString
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.metaCharset
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.metaDescription
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.metaTitle
@@ -21,17 +19,17 @@ fun RevealKtRenderer.writeToPath(path: Path) = path.writeText(
   this.invoke(), charset = Charsets.UTF_8
 )
 
-data class RevealKtRenderer(val presentation: RevealKt) : () -> HtmlString {
+data class RevealKtRenderer(val presentation: RevealKt) : () -> String {
   companion object {
     const val CDN_REVEAL_HREF = "https://cdn.jsdelivr.net/npm/reveal.js@5"
-    fun RevealKt.render(): HtmlString = RevealKtRenderer(this).invoke()
-    fun RevealKtBuilder.render(): HtmlString = RevealKtRenderer(this).invoke()
+    fun RevealKt.render(): String = RevealKtRenderer(this).invoke()
+    fun RevealKtBuilder.render(): String = RevealKtRenderer(this).invoke()
 
     fun FlowOrMetaDataOrPhrasingContent.styleSheet(_href: String) = this.link {
       rel = "stylesheet"; href = _href
     }
 
-    fun RevealKt.Configuration.toJson(): JsonString = RevealConfiguration(this).toJson()
+    fun RevealKt.Configuration.toJson(): String = RevealConfiguration(this).toJson()
 
     val RevealKt.Configuration.Theme.CDN: String
       get() {
@@ -46,7 +44,7 @@ data class RevealKtRenderer(val presentation: RevealKt) : () -> HtmlString {
         this.meta { name = "description"; content = it }
       }
 
-      fun html(builder: HtmlBlockTag.() -> Unit) = HtmlDslElement(builder=builder)
+      fun html(builder: HtmlBlockTag.() -> Unit) = HtmlDslElement(builder = builder)
 
       data class RevealTable(
         override val id: ID = UuidGenerator.generateId(),
@@ -75,7 +73,7 @@ data class RevealKtRenderer(val presentation: RevealKt) : () -> HtmlString {
 
   constructor(builder: RevealKtBuilder) : this(builder.build())
 
-  private val html: HtmlString by lazy {
+  private val html: String by lazy {
     "<!DOCTYPE html>\n" + createHTML().html {
       lang = presentation.meta.language
       head {
@@ -140,5 +138,5 @@ data class RevealKtRenderer(val presentation: RevealKt) : () -> HtmlString {
     }
   }
 
-  override fun invoke(): HtmlString = html
+  override fun invoke(): String = html
 }

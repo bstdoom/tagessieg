@@ -2,6 +2,8 @@ package io.github.bstdoom.tagessieg.infrastructure
 
 import io.github.bstdoom.tagessieg.Fixtures
 import io.github.bstdoom.tagessieg.model.Match
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateRange
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -86,4 +88,10 @@ class SerializationFormatTest {
     val path: Path
   )
 
+  @Test
+  fun `serialize a kotlinx LocalDateRange`() {
+    LocalDateRange(LocalDate(2023, 1, 1), LocalDate(2023, 1, 10)).let { range ->
+      assertThat(SerializationFormat.CSV.encodeToString(range)).isEqualTo("2023-01-01,2023-01-10")
+    }
+  }
 }

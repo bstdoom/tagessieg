@@ -17,8 +17,8 @@ class ImportMatchCmdTest {
   @Test
   fun `should import match from json`(@TempDir tempDir: Path) {
     val jsonPath = "src/test/resources/github/match-3873007996.json"
-    val gradleProps = tempDir.resolve("gradle.properties")
-    gradleProps.writeText("""
+    val applicationProps = tempDir.resolve("application.properties")
+    applicationProps.writeText("""
             tagessieg.data.matches.main=main.csv
             tagessieg.data.matches.test=test.csv
             tagessieg.config.daterange=2023-01-01,2026-12-31
@@ -40,8 +40,8 @@ class ImportMatchCmdTest {
   @Test
   fun `should respect dry-run`(@TempDir tempDir: Path) {
     val jsonPath = "src/test/resources/github/match-3873007996.json"
-    val gradleProps = tempDir.resolve("gradle.properties")
-    gradleProps.writeText("""
+    val applicationProps = tempDir.resolve("application.properties")
+    applicationProps.writeText("""
             tagessieg.data.matches.main=main.csv
             tagessieg.data.matches.test=test.csv
             tagessieg.config.daterange=2023-01-01,2026-12-31
@@ -59,8 +59,8 @@ class ImportMatchCmdTest {
   @Test
   fun `should respect quiet flag`(@TempDir tempDir: Path) {
     val jsonPath = "src/test/resources/github/match-3873007996.json"
-    val gradleProps = tempDir.resolve("gradle.properties")
-    gradleProps.writeText("""
+    val applicationProps = tempDir.resolve("application.properties")
+    applicationProps.writeText("""
             tagessieg.data.matches.main=main.csv
             tagessieg.data.matches.test=test.csv
             tagessieg.config.daterange=2023-01-01,2026-12-31

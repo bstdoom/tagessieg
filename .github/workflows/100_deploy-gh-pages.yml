@@ -47,6 +47,7 @@ jobs:
           cp -r docs/assets temp/assets
           touch temp/index.html
           touch temp/.nojekyll
+          # Update gradle.properties for temp dir usage
           cp gradle.properties temp/
 
       - name: Generate Reveal

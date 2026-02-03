@@ -6,16 +6,19 @@ import io.github.bstdoom.tagessieg.command.CreateStatisticsCmd
 import io.github.bstdoom.tagessieg.command.GenerateRevealCmd
 import io.github.bstdoom.tagessieg.command.ImportMatchCmd
 import io.github.bstdoom.tagessieg.command.InfoCmd
+import io.github.bstdoom.tagessieg.command.InitWorkDirCmd
 import io.github.bstdoom.tagessieg.command.RootCmd
+import io.github.bstdoom.tagessieg.infrastructure.TagessiegProperties
+
+//val properties = TagessiegProperties.load()
 
 fun main(vararg args: String) = RootCmd()
   .subcommands(
     InfoCmd(),
+    InitWorkDirCmd(),
     ImportMatchCmd(),
     CreateStatisticsCmd(),
     GenerateRevealCmd()
   )
   .main(args)
 
-typealias HtmlString = String
-typealias JsonString = String
