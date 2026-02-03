@@ -11,7 +11,7 @@ import kotlinx.serialization.Transient
 @Serializable
 sealed interface LocalDateRange : ClosedRange<LocalDate>, Iterable<YearMonth> {
   companion object {
-    val DATE_RANGE = TagessiegProperties.read().configuration.activeDateRange
+    val DATE_RANGE = TagessiegProperties.load().configuration.activeDateRange
   }
 
   override val start: LocalDate

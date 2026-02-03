@@ -39,31 +39,21 @@ data class TagessiegProperties(
 
     fun Properties.getRequired(key: String): String = getProperty(key) ?: throw IllegalStateException("Property '${key}' is required in gradle.properties")
 
-    fun read(rootPath: Path? = null): TagessiegProperties {
-      val props = Properties()
-      val propertyFileName = APPLICATION_PROPERTIES_FILE
+    fun load(rootPath: Path? = null): TagessiegProperties {
 
-      val loaded = if (rootPath != null) {
-        val file = rootPath.resolve(propertyFileName)
+      val props = if (rootPath != null) {
+        val file = rootPath.resolve(APPLICATION_PROPERTIES_FILE)
         if (file.exists()) {
-          file.inputStream().use { props.load(it) }
-          true
-        } else false
+          Properties().apply { load(file.inputStream()) }
+        } else null
       } else {
-        val inputStream = Companion::class.java.classLoader.getResourceAsStream(propertyFileName)
+        val inputStream = Companion::class.java.classLoader.getResourceAsStream(APPLICATION_PROPERTIES_FILE)
         if (inputStream != null) {
-          inputStream.use { props.load(it) }
-          true
-        } else false
+          Properties().apply { load(inputStream) }
+        } else null
       }
 
-      if (!loaded) {
-        // Fallback for tests or when application.properties is missing
-        props.setProperty(PropertyKeys.DOCS_INDEX, "index.html")
-        props.setProperty(PropertyKeys.DATA_CSV_MAIN, "data/matches.csv")
-        props.setProperty(PropertyKeys.DATA_CSV_TEST, "data/matches-test.csv")
-        props.setProperty(PropertyKeys.CONFIG_DATE_UPPER_BOUND, "2023-01-01,2026-12-31")
-      }
+      requireNotNull(props) { "application.properties is missing" }
 
       val configDateRange = props.getProperty(PropertyKeys.CONFIG_DATE_UPPER_BOUND)
       val (start, end) = configDateRange.split(",", limit = 2)
@@ -80,6 +70,4 @@ data class TagessiegProperties(
       )
     }
   }
-
-
 }

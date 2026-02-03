@@ -20,7 +20,7 @@ class TagessiegPropertiesTest {
             other.prop=should.not.be.loaded
         """.trimIndent())
 
-    val properties = TagessiegProperties.read(tempDir)
+    val properties = TagessiegProperties.load(tempDir)
 
     assertThat(properties.mainCsv.toString()).endsWith("data/matches.csv")
   }
@@ -34,14 +34,14 @@ class TagessiegPropertiesTest {
         """.trimIndent())
 
     assertThatThrownBy {
-      TagessiegProperties.read(tempDir)
+      TagessiegProperties.load(tempDir)
     }.isInstanceOf(IllegalStateException::class.java)
       .hasMessageContaining(PropertyKeys.DATA_CSV_MAIN)
   }
 
   @Test
   fun `should load from real project root`() {
-    val properties = TagessiegProperties.read()
+    val properties = TagessiegProperties.load()
     assertThat(properties.mainCsv).isEqualTo(Path.of("./data/matches.csv"))
   }
 }

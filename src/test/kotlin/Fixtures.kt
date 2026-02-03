@@ -13,7 +13,11 @@ import kotlin.io.path.isDirectory
 import kotlin.io.path.readText
 
 data object Fixtures {
-  val properties = TagessiegProperties.read()
+  val properties = TagessiegProperties.load()
+    .copy(
+      mainCsv = Path.of("src/main/resources/matches.csv"),
+      testCsv = Path.of("src/test/resources/matches-test.csv")
+    )
   val _2026_01_22 = "2026-01-22"
   val LD_2026_01_22 = LocalDate.parse(_2026_01_22)
 
