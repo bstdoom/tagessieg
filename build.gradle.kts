@@ -13,7 +13,7 @@ plugins {
 
 
 application {
-  mainClass = "io.github.bstdoom.tagessieg.MainKt"
+  mainClass = "io.github.bstdoom.tagessieg.TagessiegCli"
 }
 
 repositories {

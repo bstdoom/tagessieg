@@ -8,7 +8,6 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat
 import io.github.bstdoom.tagessieg.infrastructure.TagessiegProperties
-import io.github.bstdoom.tagessieg.properties
 import java.nio.file.Path
 
 class RootCmd : CliktCommand(name = NAME) {
@@ -43,11 +42,14 @@ class RootCmd : CliktCommand(name = NAME) {
   ).flag(default = false)
 
   override fun run() {
+    val properties = TagessiegProperties.load(Path.of("."))
+
     // Set context once with global options and properties
     currentContext.obj = RootCtx(
+      rootDir = Path.of("."),
       workDir = workDirectory,
-      properties = properties,
       format = if (quiet) EchoFormat.QUIET else format,
+      properties = properties,
       dryRun = dryRun,
       test = test
     )
