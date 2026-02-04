@@ -13,10 +13,24 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Setup
-        uses: ./.github/actions/setup
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Setup just
+        uses: extractions/setup-just@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          just-version: '1.46.0'
 
       # 1. Read the issue and comments from GitHub and write them to match.json
       - name: Parse Event and Comments - Provide match.json
@@ -49,7 +63,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/data/*.csv
+          git add _data/*.csv
           git commit -m "Import match ${{ github.event.issue.title }}" || echo "No changes to commit"
           git push
 

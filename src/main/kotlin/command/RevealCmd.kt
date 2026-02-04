@@ -18,17 +18,14 @@ import io.github.bstdoom.tagessieg.model.statistic.GrandSlamCount
 import io.github.bstdoom.tagessieg.model.statistic.LeagueTable
 import io.github.bstdoom.tagessieg.model.statistic.TagessiegCount
 import io.github.bstdoom.tagessieg.model.type.LocalDateRange
-import kotlinx.css.small
 import kotlinx.html.small
 import kotlinx.serialization.builtins.ListSerializer
-import java.text.DateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.io.path.exists
 import kotlin.io.path.writeText
-import kotlin.time.Clock
-import kotlin.time.Instant
 
-class GenerateRevealCmd : SubCommand(name = NAME, help = "Generate a reveal.js presentation from the matches data.") {
+class RevealCmd : SubCommand(name = NAME, help = "Generate a reveal.js presentation from the matches data.") {
   companion object {
     const val NAME = "reveal"
   }
@@ -36,8 +33,11 @@ class GenerateRevealCmd : SubCommand(name = NAME, help = "Generate a reveal.js p
   private val GERMAN_DATE_TIME = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
 
   override fun run() {
-    TODO("Not yet implemented")
-    val matchesCsv = ctx.workDir.resolve("data/matches.csv")
+    val matchesCsv = ctx.workDir.resolve("matches.csv")
+    if (!matchesCsv.exists()) {
+      echo("No matches.csv found in workDir. Please run 'init' first.", err = true)
+      return
+    }
     val csv = MatchesCsv(file=matchesCsv, createIfMissing = false)
     val target = ctx.workDir.resolve("index.html")
 

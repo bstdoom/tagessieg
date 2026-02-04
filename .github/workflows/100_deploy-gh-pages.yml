@@ -42,19 +42,21 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Setup just
+        uses: extractions/setup-just@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          just-version: '1.46.0'
+
       - name: Prepare Temp Directory
         run: |
-          mkdir -p temp/data
-          cp docs/data/matches.csv temp/data/
-          cp docs/data/matches-test.csv temp/data/
-          cp -r docs/assets temp/assets
-          touch temp/index.html
-          touch temp/.nojekyll
-          # Update gradle.properties for temp dir usage
-          cp gradle.properties temp/
+          just -w ./temp init
+          touch ./temp/.nojekyll
+          touch ./temp/index.html
 
       - name: Generate Reveal
-        run: ./gradlew run --args="-w temp reveal"
+        run: |
+          just tagessieg -w ./temp reveal
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -62,7 +64,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload temp directory
-          path: 'temp'
+          path: './temp'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
