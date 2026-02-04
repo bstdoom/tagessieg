@@ -1,12 +1,8 @@
 package io.github.bstdoom.tagessieg.command
 
-import dev.limebeck.revealkt.dsl.SlidesHolder
-import dev.limebeck.revealkt.dsl.code
-import dev.limebeck.revealkt.dsl.regular
-import dev.limebeck.revealkt.dsl.revealKt
+import dev.limebeck.revealkt.dsl.*
 import dev.limebeck.revealkt.dsl.slides.regularSlide
 import dev.limebeck.revealkt.dsl.slides.verticalSlide
-import dev.limebeck.revealkt.dsl.title
 import io.github.bstdoom.tagessieg.infrastructure.MatchesCsv
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.RevealTable
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.html
@@ -18,6 +14,8 @@ import io.github.bstdoom.tagessieg.model.statistic.GrandSlamCount
 import io.github.bstdoom.tagessieg.model.statistic.LeagueTable
 import io.github.bstdoom.tagessieg.model.statistic.TagessiegCount
 import io.github.bstdoom.tagessieg.model.type.LocalDateRange
+import kotlinx.html.a
+import kotlinx.html.p
 import kotlinx.html.small
 import kotlinx.serialization.builtins.ListSerializer
 import java.time.LocalDateTime
@@ -38,7 +36,7 @@ class RevealCmd : SubCommand(name = NAME, help = "Generate a reveal.js presentat
       echo("No matches.csv found in workDir. Please run 'init' first.", err = true)
       return
     }
-    val csv = MatchesCsv(file=matchesCsv, createIfMissing = false)
+    val csv = MatchesCsv(file = matchesCsv, createIfMissing = false)
     val target = ctx.workDir.resolve("index.html")
 
     val reveal = revealKt("KickOff2 - Statistics J vs H") {
@@ -80,8 +78,20 @@ class RevealCmd : SubCommand(name = NAME, help = "Generate a reveal.js presentat
           )
         )
         +html {
-          small {
-            +"Stand: ${GERMAN_DATE_TIME.format(LocalDateTime.now())}"
+          p {
+            small {
+              +"Stand: ${GERMAN_DATE_TIME.format(LocalDateTime.now())}"
+            }
+          }
+          p {
+            small {
+              a(
+                href = "https://github.com/bstdoom/tagessieg/issues/new?template=spieltag.yml",
+                target = "_blank"
+              ) {
+                +"Submit Match"
+              }
+            }
           }
         }
       }
