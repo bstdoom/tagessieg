@@ -48,56 +48,57 @@ class ImportMatchCmd : SubCommand(name = NAME, help = "Import a match from a jso
   }
 
   override fun run() {
-    val issue = SerializationFormat.JSON.decodeFromString<ImportIssue>(file.readText(ctx.cs))
-
-    val dateStr = issue.title.let { TITLE_REGEX.find(it)?.value }
-      ?: throw IllegalArgumentException("Could not find date in title: ${issue.title}")
-    val date = LocalDate.parse(dateStr, DATE_FORMAT)
-
-    val games = issue.body.let { body ->
-      GAME_REGEX.findAll(body).map { it.groupValues[1] }.toList()
-    }
-
-    if (games.size != 3) {
-      throw IllegalArgumentException("Expected 3 games in body, but found ${games.size}")
-    }
-
-    val match = Match(
-      id = issue.id,
-      date = date,
-      game1 = Game.parse(games[0]),
-      game2 = Game.parse(games[1]),
-      game3 = Game.parse(games[2]),
-      comment = issue.comments.map { it.trim() }.filter { it.isNotBlank() }.joinToString(", ").takeIf { it.isNotBlank() }
-    )
-
-    val isTest = issue.labels.contains(SCOPE_TEST)
-    val relativeCsvPath = if (isTest) ctx.properties.testCsv else ctx.properties.mainCsv
-    val absoluteCsvPath = ctx.workDir.resolve(relativeCsvPath)
-
-    if (ctx.dryRun) {
-      echo("Dry run: match with id ${match.id} would be added to ${relativeCsvPath.fileName}")
-    } else {
-      // 1. Save to workDir (current behavior)
-      val matchesCsv = MatchesCsv(absoluteCsvPath)
-      matchesCsv + match
-
-      // 2. Save to source directory (requested behavior)
-      val sourceCsvPath = Path.of("src").resolve(if (isTest) "test" else "main").resolve("resources").resolve(relativeCsvPath.fileName.toString())
-      if (sourceCsvPath.exists()) {
-        val sourceMatchesCsv = MatchesCsv(sourceCsvPath)
-        // Avoid duplicate save if sourceCsvPath is same as absoluteCsvPath (unlikely but possible in some test setups)
-        if (sourceCsvPath.toAbsolutePath() != absoluteCsvPath.toAbsolutePath()) {
-          sourceMatchesCsv + match
-        }
-      }
-
-      if (!ctx.quiet) {
-        echo("Match with id ${match.id} added to ${relativeCsvPath.fileName}")
-        if (ctx.format == io.github.bstdoom.tagessieg.infrastructure.EchoFormat.CSV) {
-          echof(match)
-        }
-      }
-    }
+    TODO("Not yet implemented")
+//    val issue = SerializationFormat.JSON.decodeFromString<ImportIssue>(file.readText(ctx.cs))
+//
+//    val dateStr = issue.title.let { TITLE_REGEX.find(it)?.value }
+//      ?: throw IllegalArgumentException("Could not find date in title: ${issue.title}")
+//    val date = LocalDate.parse(dateStr, DATE_FORMAT)
+//
+//    val games = issue.body.let { body ->
+//      GAME_REGEX.findAll(body).map { it.groupValues[1] }.toList()
+//    }
+//
+//    if (games.size != 3) {
+//      throw IllegalArgumentException("Expected 3 games in body, but found ${games.size}")
+//    }
+//
+//    val match = Match(
+//      id = issue.id,
+//      date = date,
+//      game1 = Game.parse(games[0]),
+//      game2 = Game.parse(games[1]),
+//      game3 = Game.parse(games[2]),
+//      comment = issue.comments.map { it.trim() }.filter { it.isNotBlank() }.joinToString(", ").takeIf { it.isNotBlank() }
+//    )
+//
+//    val isTest = issue.labels.contains(SCOPE_TEST)
+//    val relativeCsvPath = if (isTest) ctx.properties.testCsv else ctx.properties.mainCsv
+//    val absoluteCsvPath = ctx.workDir.resolve(relativeCsvPath)
+//
+//    if (ctx.dryRun) {
+//      echo("Dry run: match with id ${match.id} would be added to ${relativeCsvPath.fileName}")
+//    } else {
+//      // 1. Save to workDir (current behavior)
+//      val matchesCsv = MatchesCsv(absoluteCsvPath)
+//      matchesCsv + match
+//
+//      // 2. Save to source directory (requested behavior)
+//      val sourceCsvPath = Path.of("src").resolve(if (isTest) "test" else "main").resolve("resources").resolve(relativeCsvPath.fileName.toString())
+//      if (sourceCsvPath.exists()) {
+//        val sourceMatchesCsv = MatchesCsv(sourceCsvPath)
+//        // Avoid duplicate save if sourceCsvPath is same as absoluteCsvPath (unlikely but possible in some test setups)
+//        if (sourceCsvPath.toAbsolutePath() != absoluteCsvPath.toAbsolutePath()) {
+//          sourceMatchesCsv + match
+//        }
+//      }
+//
+//      if (!ctx.quiet) {
+//        echo("Match with id ${match.id} added to ${relativeCsvPath.fileName}")
+//        if (ctx.format == io.github.bstdoom.tagessieg.infrastructure.EchoFormat.CSV) {
+//          echof(match)
+//        }
+//      }
+//    }
   }
 }

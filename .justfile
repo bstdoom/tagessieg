@@ -3,7 +3,7 @@
 
 # runs the tagessieg cli with args, e.g. `tagessieg -q import-matches --file matches.json`
 [group('tagessieg')]
-tagessieg +args:
+tagessieg +args="--help":
   @./gradlew run --quiet --console=plain --no-daemon --args="{{args}}"
 
 build:
@@ -17,7 +17,7 @@ updates:
   ./gradlew dependencyUpdates > ./_tmp/updates.txt
 
 wrapper:
-  ./gradlew wrapper --gradle-version=9.3.0
+  ./gradlew wrapper --gradle-version=9.3.1
 
 cli_run:
   java -jar ./cli/build/libs/cli.jar

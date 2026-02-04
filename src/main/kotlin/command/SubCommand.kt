@@ -6,6 +6,8 @@ import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.core.theme
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
+import io.github.bstdoom.tagessieg.TagessiegCli
+import io.github.bstdoom.tagessieg.TagessiegCli.Companion.TagessiegContext
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.CSV
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.ERROR
@@ -13,8 +15,8 @@ import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.JSON
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.PLAIN
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.QUIET
 
-abstract class SubCommand(name: String, private val help: String = "") : CliktCommand(name= name) {
-  val ctx by requireObject<RootCtx>()
+sealed class SubCommand(name: String, private val help: String = "") : CliktCommand(name= name) {
+  val ctx by requireObject<TagessiegContext>()
 
   inline fun <reified T> echof(message: T, format: EchoFormat = ctx.format) = when (format) {
     PLAIN -> echo(message = format.encode(message))
