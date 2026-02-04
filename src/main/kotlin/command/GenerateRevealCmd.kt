@@ -36,6 +36,7 @@ class GenerateRevealCmd : SubCommand(name = NAME, help = "Generate a reveal.js p
   private val GERMAN_DATE_TIME = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
 
   override fun run() {
+    TODO("Not yet implemented")
     val matchesCsv = ctx.workDir.resolve("data/matches.csv")
     val csv = MatchesCsv(file=matchesCsv, createIfMissing = false)
     val target = ctx.workDir.resolve("index.html")

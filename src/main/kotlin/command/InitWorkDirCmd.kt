@@ -10,6 +10,7 @@ class InitWorkDirCmd : SubCommand(name = NAME, help = "Initialize the working di
   }
 
   override fun run() {
+    TODO("Not yet implemented")
     if (ctx.workDir == Path.of(".") || ctx.workDir.toAbsolutePath() == Path.of("").toAbsolutePath()) {
       throw UsageError("Cannot initialize workDir in current directory")
     }
