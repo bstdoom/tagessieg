@@ -6,6 +6,12 @@ on:
   push:
     branches: ["main"]
 
+  # Also trigger after successful match import
+  workflow_run:
+    workflows: ["Import Match"]
+    types:
+      - completed
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -24,6 +30,7 @@ concurrency:
 jobs:
   # Single deploy job since we're just deploying
   deploy:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
