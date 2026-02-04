@@ -13,6 +13,7 @@ import com.github.ajalt.clikt.parameters.types.enum
 import io.github.bstdoom.tagessieg.command.ImportCmd
 import io.github.bstdoom.tagessieg.command.InfoCmd
 import io.github.bstdoom.tagessieg.command.InitCmd
+import io.github.bstdoom.tagessieg.command.RevealCmd
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat
 import java.nio.file.Path
 
@@ -36,6 +37,7 @@ class TagessiegCli(initSubcommands: Boolean = true) : CliktCommand(name = NAME) 
         InfoCmd(),
         InitCmd(),
         ImportCmd(),
+        RevealCmd()
       )
     }
   }
