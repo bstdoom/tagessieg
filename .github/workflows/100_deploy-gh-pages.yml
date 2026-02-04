@@ -50,7 +50,7 @@ jobs:
 
       - name: Prepare Temp Directory
         run: |
-          just -w ./temp init
+          just tagessieg -w ./temp init
           touch ./temp/.nojekyll
           touch ./temp/index.html
 
