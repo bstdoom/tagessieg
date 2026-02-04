@@ -19,6 +19,8 @@ import kotlinx.html.p
 import kotlinx.html.small
 import kotlinx.serialization.builtins.ListSerializer
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.io.path.exists
 import kotlin.io.path.writeText
@@ -80,7 +82,7 @@ class RevealCmd : SubCommand(name = NAME, help = "Generate a reveal.js presentat
         +html {
           p {
             small {
-              +"Stand: ${GERMAN_DATE_TIME.format(LocalDateTime.now())}"
+              +"Stand: ${GERMAN_DATE_TIME.format(ZonedDateTime.now(ZoneId.of("Europe/Berlin")))}"
             }
           }
           p {

@@ -12,7 +12,7 @@ class IoTest {
 
   @Test
   fun `copy all files`(@TempDir tempDir: Path) {
-    source.copyTo(tempDir)
+    source.copyToRecursive(tempDir)
 
     assertThat(tempDir.resolve("assets/kick-off-2-screen.jpg")).isRegularFile()
     assertThat(tempDir.resolve("matches.csv")).isRegularFile()
@@ -20,10 +20,10 @@ class IoTest {
 
   @Test
   fun `create if not exists`(@TempDir tempDir: Path) {
-    source.copyTo(tempDir)
+    source.copyToRecursive(tempDir)
     val target = tempDir.resolve("new_dir")
 
-    source.copyTo(target)
+    source.copyToRecursive(target)
     assertThat(target.resolve("assets/kick-off-2-screen.jpg")).isRegularFile()
   }
 
@@ -31,14 +31,14 @@ class IoTest {
   fun `do not overwrite git dir`(@TempDir tempDir: Path) {
     tempDir.resolve(".git").writeText("")
     assertThatThrownBy {
-      source.copyTo(tempDir)
+      source.copyToRecursive(tempDir)
     }.hasMessageContaining("Target directory must not be a git repository")
   }
 
   @Test
   fun `delete non-empty dir`(@TempDir tempDir: Path) {
     tempDir.resolve("dummy").writeText("foo")
-    source.copyTo(tempDir)
+    source.copyToRecursive(tempDir)
     assertThat(tempDir.resolve("dummy")).doesNotExist()
   }
 }
