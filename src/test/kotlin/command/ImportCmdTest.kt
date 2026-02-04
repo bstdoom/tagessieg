@@ -16,9 +16,9 @@ import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 @Disabled("Not yet implemented")
-class ImportMatchCmdTest {
+class ImportCmdTest {
 
-  private val cli = TagessiegCli(false).subcommands(ImportMatchCmd())
+  private val cli = TagessiegCli(false).subcommands(ImportCmd())
 
   @Test
   fun `should import match from json`(@TempDir tempDir: Path) {
@@ -39,7 +39,7 @@ class ImportMatchCmdTest {
             tagessieg.config.daterange=2023-01-01,2026-12-31
         """.trimIndent())
 
-    val result = cli.test("-w $tempDir -f csv ${ImportMatchCmd.NAME} --input $jsonPath")
+    val result = cli.test("-w $tempDir -f csv ${ImportCmd.NAME} --input $jsonPath")
 
     assertThat(result.statusCode).isEqualTo(0)
     assertThat(result.stdout).contains("Match with id $issueId added to matches-test.csv")
@@ -69,7 +69,7 @@ class ImportMatchCmdTest {
             tagessieg.config.daterange=2023-01-01,2026-12-31
         """.trimIndent())
 
-    val result = cli.test("-w $tempDir --dry-run -f csv ${ImportMatchCmd.NAME} --input $jsonPath")
+    val result = cli.test("-w $tempDir --dry-run -f csv ${ImportCmd.NAME} --input $jsonPath")
 
     assertThat(result.statusCode).isEqualTo(0)
     assertThat(result.stdout).contains("Dry run: match with id $id would be added to matches-test.csv")
@@ -97,7 +97,7 @@ class ImportMatchCmdTest {
             tagessieg.config.daterange=2023-01-01,2026-12-31
         """.trimIndent())
 
-    val result = cli.test("-w $tempDir --quiet ${ImportMatchCmd.NAME} --input $jsonPath")
+    val result = cli.test("-w $tempDir --quiet ${ImportCmd.NAME} --input $jsonPath")
 
     assertThat(result.statusCode).isEqualTo(0)
     assertThat(result.stdout).isEmpty()

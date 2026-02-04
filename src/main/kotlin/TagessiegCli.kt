@@ -10,11 +10,10 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.enum
+import io.github.bstdoom.tagessieg.command.ImportCmd
 import io.github.bstdoom.tagessieg.command.InfoCmd
+import io.github.bstdoom.tagessieg.command.InitCmd
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import java.nio.file.Path
 
 class TagessiegCli(initSubcommands: Boolean = true) : CliktCommand(name = NAME) {
@@ -24,26 +23,6 @@ class TagessiegCli(initSubcommands: Boolean = true) : CliktCommand(name = NAME) 
     @JvmStatic
     fun main(vararg args: String) = TagessiegCli().main(args)
 
-    @Serializable
-    data class TagessiegContext(
-
-      @Contextual
-      val rootDir: Path = Path.of("."),
-
-      @Contextual
-      val workDir: Path,
-
-      val format: EchoFormat,
-
-      val dryRun: Boolean
-    ) {
-
-      @Transient
-      val cs = Charsets.UTF_8
-
-      @Transient
-      val quiet = format == EchoFormat.QUIET
-    }
   }
 
   override fun help(context: Context) = context.theme.info("tagessieg - A tool to generate statistics for KO2")
@@ -54,7 +33,9 @@ class TagessiegCli(initSubcommands: Boolean = true) : CliktCommand(name = NAME) 
     }
     if (initSubcommands) {
       subcommands(
-        InfoCmd()
+        InfoCmd(),
+        InitCmd(),
+        ImportCmd(),
       )
     }
   }

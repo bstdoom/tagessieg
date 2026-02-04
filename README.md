@@ -2,6 +2,8 @@
 
 Github pages hosted statistics for Kick Off 2 match results.
 
+![ko2-menu](./_data/assets/kick-off-2-screen.jpg)
+
 ## About
 
 _Mission statement (german)_

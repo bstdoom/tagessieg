@@ -11,13 +11,13 @@ import java.nio.file.Path
 import kotlin.io.path.*
 
 @Disabled("Not yet implemented")
-class InitWorkDirCmdTest {
+class InitCmdTest {
 
-    private val cli = TagessiegCli(false).subcommands(InitWorkDirCmd())
+    private val cli = TagessiegCli(false).subcommands(InitCmd())
 
     @Test
     fun `should fail if workDir is current directory`() {
-        val result = cli.test("-w . ${InitWorkDirCmd.NAME}")
+        val result = cli.test("-w . ${InitCmd.NAME}")
         assertThat(result.statusCode).isNotEqualTo(0)
         assertThat(result.stderr).contains("Cannot initialize workDir in current directory")
     }
@@ -25,7 +25,7 @@ class InitWorkDirCmdTest {
     @Test
     fun `should initialize workDir`(@TempDir tempDir: Path) {
         val workDir = tempDir.resolve("work")
-        val result = cli.test("-w $workDir ${InitWorkDirCmd.NAME}")
+        val result = cli.test("-w $workDir ${InitCmd.NAME}")
 
         assertThat(result.statusCode).isEqualTo(0)
         assertThat(result.stdout).contains("Initialized workDir")
@@ -42,7 +42,7 @@ class InitWorkDirCmdTest {
         workDir.createDirectories()
         workDir.resolve("old-file.txt").writeText("old content")
 
-        val result = cli.test("-w $workDir ${InitWorkDirCmd.NAME}")
+        val result = cli.test("-w $workDir ${InitCmd.NAME}")
 
         assertThat(result.statusCode).isEqualTo(0)
         assertThat(workDir.resolve("old-file.txt")).doesNotExist()
@@ -52,7 +52,7 @@ class InitWorkDirCmdTest {
     @Test
     fun `should respect dry-run`(@TempDir tempDir: Path) {
         val workDir = tempDir.resolve("work")
-        val result = cli.test("-w $workDir --dry-run ${InitWorkDirCmd.NAME}")
+        val result = cli.test("-w $workDir --dry-run ${InitCmd.NAME}")
 
         assertThat(result.statusCode).isEqualTo(0)
         assertThat(result.stdout).contains("Dry run:")

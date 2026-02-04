@@ -4,10 +4,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.core.requireObject
 import com.github.ajalt.clikt.core.theme
-import com.github.ajalt.clikt.parameters.options.flag
-import com.github.ajalt.clikt.parameters.options.option
-import io.github.bstdoom.tagessieg.TagessiegCli
-import io.github.bstdoom.tagessieg.TagessiegCli.Companion.TagessiegContext
+import io.github.bstdoom.tagessieg.TagessiegContext
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.CSV
 import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.ERROR
@@ -30,6 +27,10 @@ sealed class SubCommand(name: String, private val help: String = "") : CliktComm
         echo(e.message ?: "Serialization error", err = true)
       }
     }
+  }
+
+  fun dryRun(description : String?, block: () -> Unit) {
+    if (!ctx.dryRun) block() else echo("Dry run: $description")
   }
 
   override fun help(context: Context): String = context.theme.info(help)
