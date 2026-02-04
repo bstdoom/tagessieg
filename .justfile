@@ -1,10 +1,9 @@
 #!/usr/bin/env just --justfile
 
-
 # runs the tagessieg cli with args, e.g. `tagessieg -q import-matches --file matches.json`
 [group('tagessieg')]
 tagessieg +args="--help":
-  @./gradlew run --quiet --console=plain --no-daemon --args="{{args}}"
+  @gradle run --quiet --console=plain --no-daemon --args="{{args}}"
 
 build:
   ./gradlew -x test build
@@ -21,9 +20,3 @@ wrapper:
 
 cli_run:
   java -jar ./cli/build/libs/cli.jar
-
-git-push:
-  git fetch origin main
-  git add .
-  git commit -m "Auto commit"
-  git push
