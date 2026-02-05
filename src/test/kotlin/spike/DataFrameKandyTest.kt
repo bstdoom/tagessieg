@@ -57,9 +57,9 @@ class DataFrameKandyTest {
     // 1. Read the CSV using the existing MatchesCsv infrastructure, which handles the custom Game serialization.
     val csv = MatchesCsv(Path.of("./_data/matches.csv"))
 
-    // 2. Convert the List<Match> to a typed DataFrame.
+    // 2. Convert the List<Match> to a typed DataFrame and exclude the 'id' column.
     // This gives you access to all Match properties (date, game1, winner, grandSlam, etc.)
-    val df = csv.toDataFrame()
+    val df = csv.toDataFrame().remove { id }
 
     df.schema().print()
     println(df)
@@ -67,21 +67,39 @@ class DataFrameKandyTest {
 
     // Example of accessing typed properties:
     df.forEach {
-      val w = it.winner // Accessing the 'winner' property of Match
-      val d = it.date   // Accessing the 'date' property of Match
+      val w = winner // Accessing the 'winner' property of Match
+      val d = date   // Accessing the 'date' property of Match
     }
+
+    // --- Date Filtering Example ---
+
+    // Filter for Year 2025 (mimicking LocalDateRange.ByYear(2025))
+    // kotlinx-datetime LocalDate has a 'year' property
+    val df2025 = df.filter { date.year == 2025 }
+    println("Matches in 2025: ${df2025.rowsCount()}")
+
+    // Filter for a specific range (mimicking LocalDateRange)
+    val start = kotlinx.datetime.LocalDate(2025, 1, 1)
+    val end = kotlinx.datetime.LocalDate(2025, 6, 30)
+    val dfRange = df.filter { date in start..end }
+    println("Matches in range $start..$end: ${dfRange.rowsCount()}")
 
     // --- Statistics as DataFrames (DataFrame API only) ---
 
     // 1. TagessiegCount
-    val tagessiegCount = df.groupBy { winner }.count()
+    val tagessiegCount = df.groupBy { winner }.count().rename("count").into("Tagessiege")
     println("TagessiegCount:")
     println(tagessiegCount)
 
     // 2. GrandSlamCount
-    val grandSlamCount = df.filter { grandSlam }.groupBy { winner }.count()
+    val grandSlamCount = df.filter { grandSlam }.groupBy { winner }.count().rename("count").into("GrandSlams")
     println("GrandSlamCount:")
     println(grandSlamCount)
+
+    // 4. Combined Winner Statistics
+    val winnerStats = tagessiegCount.join(grandSlamCount).fillNulls("GrandSlams").with { 0 }
+    println("WinnerStats (Combined):")
+    println(winnerStats)
 
     // 3. LeagueTable
     // Use simple DataFrame operations to compute the table.
