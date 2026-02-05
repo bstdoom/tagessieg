@@ -4,7 +4,6 @@ import io.github.bstdoom.tagessieg.model.Match
 import io.github.bstdoom.tagessieg.model.Matches
 import io.github.bstdoom.tagessieg.model.type.LocalDateRange
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.csv.Csv
 import java.nio.file.Path
 import kotlin.io.path.createParentDirectories
 import kotlin.io.path.exists
@@ -17,7 +16,7 @@ import kotlin.io.path.writeText
 class MatchesCsv(
   val file: Path,
   val matches: Matches
-) {
+) : Iterable<Match> by matches {
 
   companion object {
     private val serializer = ListSerializer(Match.serializer())
@@ -61,4 +60,3 @@ class MatchesCsv(
 
   operator fun get(range: LocalDateRange): Matches = Matches(matches.toList(), range)
 }
-

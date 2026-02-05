@@ -25,3 +25,4 @@ build/
 
 # Ignore Kotlin plugin data
 .kotlin/
+lets-plot-images/

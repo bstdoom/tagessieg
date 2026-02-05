@@ -6,11 +6,10 @@ plugins {
   application
 
   // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-  alias(libs.plugins.kotlin.jvm)
-  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.kt.jvm)
+  alias(libs.plugins.ktx.serialization)
+  alias(libs.plugins.ktx.dataframe)
 }
-
-
 
 application {
   mainClass = "io.github.bstdoom.tagessieg.TagessiegCli"
@@ -22,17 +21,29 @@ repositories {
 }
 
 dependencies {
-  implementation(libs.kotlin.reflect)
+  // core
+  implementation(libs.kt.reflect)
+  implementation(libs.kt.logging)
+  implementation(libs.logback.classic)
+
+  // cli
   implementation(libs.cli.clikt)
 
-  implementation(libs.kotlinx.html)
+  // stats
+  implementation(libs.ktx.dataframe)
+  implementation(libs.ktx.kandy)
+
+  // html
+  implementation(libs.ktx.html)
   implementation(libs.revealkt.dsl)
 
-  implementation(libs.kotlinx.serialization.core)
-  implementation(libs.kotlinx.serialization.csv)
-  implementation(libs.kotlinx.serialization.json)
-  implementation(libs.kotlinx.serialization.datetime)
+  // serialization
+  implementation(libs.ktx.serialization.core)
+  implementation(libs.ktx.serialization.csv)
+  implementation(libs.ktx.serialization.json)
+  implementation(libs.ktx.serialization.datetime)
 
+  // test
   testImplementation(libs.junit.jupiter.api)
   testRuntimeOnly(libs.junit.jupiter.engine)
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
