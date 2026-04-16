@@ -67,6 +67,10 @@ jobs:
         run: |
           just tagessieg -w ./temp reveal
 
+      - name: Generate Tabler
+        run: |
+          just tagessieg -w ./temp tabler
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

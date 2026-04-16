@@ -38,7 +38,7 @@ class RevealCmd : SubCommand(name = NAME, help = "Generate a reveal.js presentat
       return
     }
     val csv = MatchesCsv(file = matchesCsv, createIfMissing = false)
-    val target = ctx.workDir.resolve("index.html")
+    val target = ctx.workDir.resolve("reveal.html")
 
     val reveal = revealKt("KickOff2 - Statistics J vs H") {
 
