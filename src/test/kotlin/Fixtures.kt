@@ -6,11 +6,17 @@ import io.github.bstdoom.tagessieg.model.Match
 import kotlinx.datetime.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.AnnotatedElementContext
+import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.api.io.TempDirFactory
+import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.copyTo
+import kotlin.io.path.createDirectories
 import kotlin.io.path.isDirectory
 import kotlin.io.path.readText
+import kotlin.io.path.writeText
 
 data object Fixtures {
   val properties = TagessiegProperties.load()
@@ -33,16 +39,30 @@ data object Fixtures {
     ""
   }
 
-  fun copyTestCsv(path: Path) : Path {
+  fun copyTestCsv(path: Path, overwrite: Boolean = true) : Path {
     require(path.isDirectory()) { "Target path must be a directory" }
 
-    if (!java.nio.file.Files.exists(properties.testCsv)) {
+    if (!Files.exists(properties.testCsv)) {
       val target = path.resolve(properties.testCsv.fileName)
-      java.nio.file.Files.writeString(target, "")
+      Files.writeString(target, "")
       return target
     }
 
-    return properties.testCsv.copyTo(path.resolve(properties.testCsv.fileName))
+    return properties.testCsv.copyTo(
+      target = path.resolve(properties.testCsv.fileName),
+      overwrite = true
+    )
+  }
+
+  class  BuildHtml : TempDirFactory {
+    override fun createTempDirectory(
+      elementContext: AnnotatedElementContext,
+      extensionContext: ExtensionContext
+    ): Path {
+      val tempDir = Path.of("build","html")
+        .createDirectories()
+      return tempDir
+    }
   }
 }
 

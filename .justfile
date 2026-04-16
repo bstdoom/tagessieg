@@ -19,4 +19,4 @@ wrapper:
   ./gradlew wrapper --gradle-version=9.3.1
 
 cli_run:
-  java -jar ./cli/build/libs/cli.jar
+  java -jar ./build/libs/tagessieg.jar

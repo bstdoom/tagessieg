@@ -9,6 +9,9 @@ import dev.limebeck.revealkt.utils.UuidGenerator
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.metaCharset
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.metaDescription
 import io.github.bstdoom.tagessieg.infrastructure.RevealKtRenderer.Companion.Ext.metaTitle
+import io.github.bstdoom.tagessieg.infrastructure.html.charset
+import io.github.bstdoom.tagessieg.infrastructure.html.title
+import io.github.bstdoom.tagessieg.infrastructure.html.viewport
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 import java.nio.charset.Charset
@@ -77,17 +80,9 @@ data class RevealKtRenderer(val presentation: RevealKt) : () -> String {
     "<!DOCTYPE html>\n" + createHTML().html {
       lang = presentation.meta.language
       head {
-        metaCharset()
-        meta {
-          name = "viewport"
-          content = "width=device-width, initial-scale=1.0"
-        }
-        metaTitle(presentation.title)
-        metaDescription(presentation.meta.description)
-
-        title {
-          +presentation.title
-        }
+        charset()
+        viewport()
+        title(title = presentation.title, description = presentation.meta.description)
 
         styleSheet("$CDN_REVEAL_HREF/dist/reveal.css")
         styleSheet(presentation.configuration.appearance.theme.CDN)
@@ -121,7 +116,7 @@ data class RevealKtRenderer(val presentation: RevealKt) : () -> String {
           }
         }
 
-        script(src = "$CDN_REVEAL_HREF/dist/reveal.js") {}
+        script(src = "$CDN_REVEAL_HREF/dist/reveal.js"){}
         script(src = "$CDN_REVEAL_HREF/plugin/markdown/markdown.js") {}
         script(src = "$CDN_REVEAL_HREF/plugin/highlight/highlight.js") {}
         script {

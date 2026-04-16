@@ -24,7 +24,7 @@ class Matches private constructor(
     ): Matches = invoke(value.toList(), range = LocalDateRange.AllTime)
   }
 
-
+  fun filter(range: LocalDateRange) = Matches(sortedValue.filter { it.date in range }, range)
 
   fun filter(filter: MatchFilter) = Matches(sortedValue.filter { filter.test(it) }, filteredRange)
 

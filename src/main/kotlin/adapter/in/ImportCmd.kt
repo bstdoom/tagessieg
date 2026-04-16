@@ -3,8 +3,6 @@ package io.github.bstdoom.tagessieg.command
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
-import io.github.bstdoom.tagessieg.infrastructure.EchoFormat
-import io.github.bstdoom.tagessieg.infrastructure.EchoFormat.ERROR
 import io.github.bstdoom.tagessieg.infrastructure.MatchesCsv
 import io.github.bstdoom.tagessieg.infrastructure.SerializationFormat
 import io.github.bstdoom.tagessieg.model.Game

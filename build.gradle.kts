@@ -48,6 +48,7 @@ dependencies {
   testRuntimeOnly(libs.junit.jupiter.engine)
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
   testImplementation(libs.assertj.core)
+  testImplementation(libs.test.instancio)
 }
 
 testing {

@@ -6,6 +6,17 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.*
 
+class FileContent(val path: Path, val content: ByteArray) {
+
+  constructor(path: Path, content: String) : this(path, content.toByteArray())
+
+  fun write(parent: Path) : Path {
+    val target = parent.resolve(path)
+    target.parent?.createDirectories()
+    target.writeBytes(content)
+    return target
+  }
+}
 
 fun Path.copyToRecursive(target: Path) {
   require(isDirectory() && exists()) { "Source path must be an existing directory." }

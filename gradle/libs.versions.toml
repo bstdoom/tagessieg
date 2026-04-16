@@ -1,11 +1,11 @@
 [versions]
-kotlin = "2.3.0"
+kotlin = "2.3.20"
 kotlin-logging = "7.0.14"
 kotlinx-html = "0.12.0"
 kotlinx-serialization = "1.10.0"
 kotlinx-serialization-csv = "3.2.1"
 kotlinx-datetime = "0.7.1"
-kotlinx-dataframe  = "1.0.0-Beta4"
+kotlinx-dataframe = "1.0.0-Beta4"
 logback = "1.5.27"
 
 clikt = "5.0.2"
@@ -14,6 +14,7 @@ revealkt = "1.0.0"
 
 junit = "6.0.2"
 assertj = "3.27.7"
+instancio = "6.0.0-RC2"
 
 [libraries]
 # kotlin
@@ -21,7 +22,7 @@ kt-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "ko
 kt-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 ktx-dataframe = { module = "org.jetbrains.kotlinx:dataframe", version.ref = "kotlinx-dataframe" }
 ktx-html = { module = "org.jetbrains.kotlinx:kotlinx-html", version.ref = "kotlinx-html" }
-ktx-kandy = {module = "org.jetbrains.kotlinx:kandy-lets-plot", version.ref = "kandy" }
+ktx-kandy = { module = "org.jetbrains.kotlinx:kandy-lets-plot", version.ref = "kandy" }
 ktx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 ktx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ktx-serialization-csv = { module = "de.brudaswen.kotlinx.serialization:kotlinx-serialization-csv", version.ref = "kotlinx-serialization-csv" }
@@ -36,6 +37,8 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+
+test-instancio = { module = "org.instancio:instancio-kotlin", version.ref = "instancio" }
 
 [plugins]
 kt-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

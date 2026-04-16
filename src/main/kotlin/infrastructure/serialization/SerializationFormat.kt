@@ -72,6 +72,7 @@ enum class SerializationFormat(private val format: StringFormat) : StringFormat 
   JSON(format = Json {
     useArrayPolymorphism = true
     ignoreUnknownKeys = true
+    prettyPrint = true
     serializersModule = SerializersModule {
       contextual(PathSerializer)
       contextual(LocalDateRangeSerializer)

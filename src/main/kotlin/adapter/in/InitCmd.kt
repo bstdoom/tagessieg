@@ -1,7 +1,6 @@
 package io.github.bstdoom.tagessieg.command
 
 import io.github.bstdoom.tagessieg.infrastructure.copyToRecursive
-import kotlin.io.path.copyTo
 
 class InitCmd : SubCommand(name = NAME, help = "Initialize the working directory (copies csv and assets/).") {
   companion object {
