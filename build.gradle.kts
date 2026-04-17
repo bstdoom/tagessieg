@@ -9,6 +9,7 @@ plugins {
   alias(libs.plugins.kt.jvm)
   alias(libs.plugins.ktx.serialization)
   alias(libs.plugins.ktx.dataframe)
+  alias(libs.plugins.graalvm.native)
 }
 
 application {
@@ -22,7 +23,6 @@ repositories {
 
 dependencies {
   // core
-  implementation(libs.kt.reflect)
   implementation(libs.kt.logging)
   implementation(libs.logback.classic)
 
@@ -65,6 +65,23 @@ testing {
 java {
   toolchain {
     languageVersion = JavaLanguageVersion.of(21)
+  }
+}
+
+graalvmNative {
+  binaries {
+    named("main") {
+      imageName.set("tagessieg")
+      mainClass.set(application.mainClass)
+      javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(21))
+      })
+      buildArgs.add("-H:+AddAllCharsets")
+      buildArgs.add("--initialize-at-build-time=kotlin.DeprecationLevel")
+    }
+  }
+  metadataRepository {
+    enabled.set(true)
   }
 }
 
