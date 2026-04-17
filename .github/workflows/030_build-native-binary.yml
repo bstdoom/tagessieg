@@ -7,6 +7,8 @@ on:
       - "src/**"
       - "build.gradle.kts"
       - "settings.gradle.kts"
+      - ".java-version"
+      - ".github/workflows/**"
       - "gradle.properties"
       - "gradle/**"
   workflow_dispatch:
@@ -25,7 +27,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: .cache/tagessieg/tagessieg
-          key: ${{ runner.os }}-${{ runner.arch }}-tagessieg-native-${{ hashFiles('build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties', 'src/main/**') }}
+          key: ${{ runner.os }}-${{ runner.arch }}-tagessieg-native-${{ hashFiles('.java-version', 'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties', 'src/main/**') }}
 
       - name: Set up GraalVM from .java-version
         uses: actions/setup-java@v5

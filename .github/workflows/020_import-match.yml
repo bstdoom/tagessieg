@@ -20,7 +20,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: .cache/tagessieg/tagessieg
-          key: ${{ runner.os }}-${{ runner.arch }}-tagessieg-native-${{ hashFiles('build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties', 'src/main/**') }}
+          key: ${{ runner.os }}-${{ runner.arch }}-tagessieg-native-${{ hashFiles('.java-version', 'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties', 'src/main/**') }}
           fail-on-cache-miss: true
 
       # 1. Read the issue and comments from GitHub and write them to match.json
@@ -65,4 +65,3 @@ jobs:
           else
              git push
           fi
-
