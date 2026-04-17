@@ -27,7 +27,7 @@ jobs:
 
       - name: Restore native binary cache
         id: native-cache-restore
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: .cache/tagessieg/tagessieg
           key: ${{ runner.os }}-${{ runner.arch }}-tagessieg-native-${{ hashFiles('.java-version', 'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties', 'src/main/**') }}
@@ -40,7 +40,7 @@ jobs:
           cache: "gradle"
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
         with:
           gradle-version: "9.4.1"
 
@@ -60,13 +60,13 @@ jobs:
 
       - name: Save native binary cache
         if: steps.native-cache-restore.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: .cache/tagessieg/tagessieg
           key: ${{ steps.native-cache-restore.outputs.cache-primary-key }}
 
       - name: Upload native binary artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: tagessieg-native-${{ runner.os }}-${{ runner.arch }}
           path: .cache/tagessieg/tagessieg
