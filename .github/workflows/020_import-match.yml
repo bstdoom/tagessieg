@@ -6,6 +6,9 @@ on:
   issues:
     types: [ closed ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   import-match:
     if: contains(github.event.issue.labels.*.name, 'spieltag') && github.event.issue.state == 'closed'
@@ -14,7 +17,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Restore native binary cache
         uses: actions/cache/restore@v4

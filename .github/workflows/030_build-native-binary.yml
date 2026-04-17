@@ -13,6 +13,9 @@ on:
       - "gradle/**"
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   build-native:
     runs-on: ubuntu-latest
@@ -20,7 +23,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Restore native binary cache
         id: native-cache-restore
