@@ -43,7 +43,7 @@ class SerializationFormatTest {
     )
 
     val encoded = SerializationFormat.JSON.encodeToString(Match.Companion.serializer(), match)
-    assertThat(encoded).contains("\"date\":\"2026-01-22\"", "\"game1\":\"1:2\"", "JSON test")
+    assertThat(encoded).contains("\"date\": \"2026-01-22\"", "\"game1\": \"1:2\"", "\"comment\": \"JSON test\"")
 
     val decoded = SerializationFormat.JSON.decodeFromString(Match.Companion.serializer(), encoded)
     assertThat(decoded).isEqualTo(match)
@@ -64,7 +64,7 @@ class SerializationFormatTest {
       val wrapper = PathWrapper(Path.of("some/relative/path"))
       val json = SerializationFormat.JSON.encodeToString(wrapper)
 
-      assertThat(json).contains("\"path\":\"some/relative/path\"")
+      assertThat(json).contains("\"path\": \"some/relative/path\"")
 
       val decoded = SerializationFormat.JSON.decodeFromString<PathWrapper>(json)
       assertThat(decoded.path).isEqualTo(wrapper.path)
