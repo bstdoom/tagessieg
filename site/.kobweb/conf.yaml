@@ -1,0 +1,10 @@
+site:
+  title: "Tagessieg"
+server:
+  files:
+    dev:
+      contentRoot: "build/generated/kobweb/app/src/jsMain/resources"
+      script: "build/kotlin-webpack/js/developmentExecutable/tagessieg.js"
+    prod:
+      script: "build/dist/js/productionExecutable/tagessieg.js"
+      siteRoot: ".kobweb/site"

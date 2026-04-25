@@ -26,3 +26,6 @@ build/
 # Ignore Kotlin plugin data
 .kotlin/
 lets-plot-images/
+
+site/.kobweb/*
+!site/.kobweb/conf.yaml
