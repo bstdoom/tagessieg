@@ -1,78 +1,78 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
   base
   idea
-  application
 
-  // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-  alias(libs.plugins.kt.jvm)
+  id("org.jetbrains.kotlin.multiplatform")
   alias(libs.plugins.ktx.serialization)
   alias(libs.plugins.ktx.dataframe)
   alias(libs.plugins.graalvm.native)
 }
 
-application {
-  mainClass = "io.github.bstdoom.tagessieg.TagessiegCli"
-}
+val mainClassName = "io.github.bstdoom.tagessieg.TagessiegCli"
 
 repositories {
   // Use Maven Central for resolving dependencies.
   mavenCentral()
 }
 
-dependencies {
-  // core
-  implementation(libs.kt.logging)
-  implementation(libs.logback.classic)
-
-  // cli
-  implementation(libs.cli.clikt)
-
-  // stats
-  implementation(libs.ktx.dataframe)
-  implementation(libs.ktx.kandy)
-
-  // html
-  implementation(libs.ktx.html)
-  implementation(libs.revealkt.dsl)
-
-  // serialization
-  implementation(libs.ktx.serialization.core)
-  implementation(libs.ktx.serialization.csv)
-  implementation(libs.ktx.serialization.json)
-  implementation(libs.ktx.serialization.datetime)
-
-  // test
-  testImplementation(libs.junit.jupiter.api)
-  testRuntimeOnly(libs.junit.jupiter.engine)
-  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-  testImplementation(libs.assertj.core)
-  testImplementation(libs.test.instancio)
-}
-
-testing {
-  suites {
-    // Configure the built-in test suite
-    val test by getting(JvmTestSuite::class) {
-      // Use JUnit Jupiter test framework
-      useJUnitJupiter("5.12.1")
-    }
+kotlin {
+  jvm()
+  js(IR) {
+    browser()
   }
-}
+  jvmToolchain(21)
 
-// Apply a specific Java toolchain to ease working on different environments.
-java {
-  toolchain {
-    languageVersion = JavaLanguageVersion.of(21)
+  sourceSets {
+    commonMain.dependencies {
+      implementation(libs.ktx.serialization.core)
+      implementation(libs.ktx.serialization.json)
+      implementation(libs.ktx.serialization.datetime)
+    }
+
+    commonTest.dependencies {
+      implementation(kotlin("test"))
+    }
+
+    jvmMain.dependencies {
+      implementation(libs.kt.logging)
+      implementation(libs.logback.classic)
+
+      implementation(libs.cli.clikt)
+
+      implementation(libs.ktx.dataframe)
+      implementation(libs.ktx.kandy)
+      implementation(libs.ktx.html)
+      implementation(libs.revealkt.dsl)
+
+      implementation(libs.ktx.serialization.csv)
+    }
+
+    jvmTest.dependencies {
+      implementation(libs.junit.jupiter.api)
+      implementation(libs.junit.jupiter.params)
+      implementation(libs.assertj.core)
+      implementation(libs.test.instancio)
+      runtimeOnly(libs.junit.jupiter.engine)
+      runtimeOnly("org.junit.platform:junit-platform-launcher")
+    }
+
+    val jvmMain by getting {
+      kotlin.srcDir("src/jvmMain/kotlin")
+      resources.srcDir("src/main/resources")
+    }
+
+    val jvmTest by getting {
+      kotlin.srcDir("src/test/kotlin")
+      resources.srcDir("src/test/resources")
+    }
   }
 }
 
 graalvmNative {
   binaries {
-    named("main") {
+    create("main") {
       imageName.set("tagessieg")
-      mainClass.set(application.mainClass)
+      mainClass.set(mainClassName)
       javaLauncher.set(javaToolchains.launcherFor {
         languageVersion.set(JavaLanguageVersion.of(21))
       })
@@ -85,31 +85,7 @@ graalvmNative {
   }
 }
 
-tasks {
-
-  withType<KotlinCompile> {
-    compilerOptions {
-      //freeCompilerArgs.add("-Xcontext-parameters")
-    }
-  }
-
-  jar {
-    manifest {
-      attributes["Main-Class"] = application.mainClass
-    }
-    from({
-      configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
-    })
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-  }
-
-  test {
-    useJUnitPlatform()
-    workingDir = rootProject.projectDir
-  }
-
-  withType<JavaExec> {
-    workingDir = rootProject.projectDir
-  }
-
+tasks.withType<Test>().configureEach {
+  useJUnitPlatform()
+  workingDir = rootProject.projectDir
 }

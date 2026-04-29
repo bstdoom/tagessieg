@@ -4,8 +4,9 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "src/**"
+      - "core/**"
       - "build.gradle.kts"
+      - "core/build.gradle.kts"
       - "settings.gradle.kts"
       - ".java-version"
       - ".github/workflows/**"
@@ -30,7 +31,7 @@ jobs:
         uses: actions/cache/restore@v5
         with:
           path: .cache/tagessieg/tagessieg
-          key: ${{ runner.os }}-${{ runner.arch }}-tagessieg-native-${{ hashFiles('.java-version', 'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties', 'src/main/**') }}
+          key: ${{ runner.os }}-${{ runner.arch }}-tagessieg-native-${{ hashFiles('.java-version', 'build.gradle.kts', 'core/build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties', 'core/src/main/**') }}
 
       - name: Set up GraalVM from .java-version
         uses: actions/setup-java@v5

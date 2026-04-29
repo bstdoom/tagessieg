@@ -1,10 +1,13 @@
 site:
   title: "Tagessieg"
+  basePath: "tagessieg"
 server:
   files:
     dev:
       contentRoot: "build/generated/kobweb/app/src/jsMain/resources"
       script: "build/kotlin-webpack/js/developmentExecutable/tagessieg.js"
     prod:
-      script: "build/dist/js/productionExecutable/tagessieg.js"
+      script: "build/kotlin-webpack/js/productionExecutable/tagessieg.js"
       siteRoot: ".kobweb/site"
+
+  port: 10101
