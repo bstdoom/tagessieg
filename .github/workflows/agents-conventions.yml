@@ -1,0 +1,21 @@
+name: Import shared conventions
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 1"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out consumer repository
+        uses: actions/checkout@v4
+
+      - name: Import shared conventions
+        uses: jangalinski/agents-conventions/.github/actions/import-shared-conventions@main
