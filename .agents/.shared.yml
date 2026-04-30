@@ -1,3 +1,5 @@
-ids:
-  - github-gh-auth-bootstrap
-  - editorconfig-formatting
+tags:
+  - github
+  - gh
+  - kotlin
+  - kobweb
