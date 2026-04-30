@@ -1,8 +1,14 @@
 
 pluginManagement {
     repositories {
-        mavenCentral()
         gradlePluginPortal()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        google()
     }
 }
 plugins {
@@ -11,3 +17,6 @@ plugins {
 }
 
 rootProject.name = "tagessieg"
+include(":core")
+include(":site")
+includeBuild("_lib/kobweb-tabler")

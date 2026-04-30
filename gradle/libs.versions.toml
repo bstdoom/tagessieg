@@ -1,5 +1,7 @@
 [versions]
 kotlin = "2.3.20"
+kobweb = "0.24.0"
+jetbrains-compose = "1.10.2"
 kotlin-logging = "7.0.14"
 kotlinx-html = "0.12.0"
 kotlinx-serialization = "1.10.0"
@@ -28,6 +30,9 @@ ktx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization
 ktx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ktx-serialization-csv = { module = "de.brudaswen.kotlinx.serialization:kotlinx-serialization-csv", version.ref = "kotlinx-serialization-csv" }
 ktx-serialization-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kobweb-core = { module = "com.varabyte.kobweb:kobweb-core", version.ref = "kobweb" }
+kobweb-api = { module = "com.varabyte.kobweb:kobweb-api", version.ref = "kobweb" }
+kobweb-silk = { module = "com.varabyte.kobweb:kobweb-silk", version.ref = "kobweb" }
 # 3rd party
 cli-clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 revealkt-dsl = { module = "dev.limebeck:revealkt-dsl-jvm", version.ref = "revealkt" }
@@ -44,5 +49,9 @@ test-instancio = { module = "org.instancio:instancio-kotlin", version.ref = "ins
 [plugins]
 kt-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ktx-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ktx-dataframe = { id = "org.jetbrains.kotlin.plugin.dataframe", version.ref = "kotlin" }
 graalvm-native = { id = "org.graalvm.buildtools.native", version.ref = "graalvm-native" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
+kobweb-application = { id = "com.varabyte.kobweb.application", version.ref = "kobweb" }

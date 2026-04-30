@@ -20,3 +20,6 @@ wrapper:
 
 cli_run:
   java -jar ./build/libs/tagessieg.jar
+
+kobweb-run:
+  cd ./site && kobweb run

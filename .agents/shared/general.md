@@ -4,7 +4,6 @@ title: General Convention Usage
 
 tags:
   - general
-  - convention
 
 agents:
   - all
@@ -42,16 +41,17 @@ Use this convention to read, interpret, and apply all files under `.agents/**/*.
 ## Allowed Tags
 
 - `general`: cross-cutting convention guidance and catalogue policy.
-- `convention`: rules about conventions, their structure, and how to use them.
 - `code`: source-code conventions and code-shape rules.
 - `style`: stylistic guidance that affects how code or docs should look.
 - `format`: whitespace, indentation, and formatting rules.
+- `project`: project structure, module layout, and repository organization.
 - `github`: GitHub platform, repository, PR, issue, and workflow topics.
 - `gh`: GitHub CLI usage and automation.
 - `issue`: GitHub issue templates, triage, and issue-writing conventions.
 - `auth`: authentication and bootstrap concerns.
 - `ci`: continuous integration and workflow automation.
 - `kotlin`: Kotlin language conventions and Kotlin-specific code organization.
+- `kobweb`: Kobweb project structure, routing, and frontend conventions.
 
 ## Allowed Agents
 
