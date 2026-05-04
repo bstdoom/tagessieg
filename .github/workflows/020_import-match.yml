@@ -14,17 +14,32 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'spieltag') && github.event.issue.state == 'closed'
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       contents: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
 
-      - name: Restore native binary cache
-        uses: actions/cache/restore@v5
+      - name: Find latest native binary artifact
+        id: native-artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          run_id=$(gh run list --repo "${{ github.repository }}" --workflow "Build Native Binary" --branch main --status success --limit 1 --json databaseId --jq '.[0].databaseId')
+          if [ -z "$run_id" ]; then
+            echo "No successful Build Native Binary run found on main." >&2
+            exit 1
+          fi
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+
+      - name: Download native binary artifact
+        uses: actions/download-artifact@v5
         with:
-          path: .cache/tagessieg/tagessieg
-          key: ${{ runner.os }}-${{ runner.arch }}-tagessieg-native-${{ hashFiles('.java-version', 'build.gradle.kts', 'core/build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties', 'core/src/main/**') }}
-          fail-on-cache-miss: true
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ steps.native-artifact.outputs.run_id }}
+          name: tagessieg-native-linux-x64
+          path: .cache/tagessieg
 
       # 1. Read the issue and comments from GitHub and write them to match.json
       - name: Parse Event and Comments - Provide match.json

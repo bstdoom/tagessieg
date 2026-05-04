@@ -5,8 +5,10 @@ on:
     branches: ["main"]
     paths:
       - "core/**"
+      - "native/**"
       - "build.gradle.kts"
       - "core/build.gradle.kts"
+      - "native/build.gradle.kts"
       - "settings.gradle.kts"
       - ".java-version"
       - ".github/workflows/**"
@@ -26,13 +28,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5
 
-      - name: Restore native binary cache
-        id: native-cache-restore
-        uses: actions/cache/restore@v5
-        with:
-          path: .cache/tagessieg/tagessieg
-          key: ${{ runner.os }}-${{ runner.arch }}-tagessieg-native-${{ hashFiles('.java-version', 'build.gradle.kts', 'core/build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties', 'core/src/main/**') }}
-
       - name: Set up GraalVM from .java-version
         uses: actions/setup-java@v5
         with:
@@ -49,26 +44,17 @@ jobs:
         run: ./gradlew build
 
       - name: Build native executable
-        if: steps.native-cache-restore.outputs.cache-hit != 'true'
-        run: ./gradlew nativeCompile
+        run: ./gradlew :native:nativeCompile
 
-      - name: Stage native executable for cache consumers
-        if: steps.native-cache-restore.outputs.cache-hit != 'true'
+      - name: Stage native executable for artifact upload
         run: |
           mkdir -p .cache/tagessieg
-          cp build/native/nativeCompile/tagessieg .cache/tagessieg/tagessieg
+          cp native/build/native/nativeCompile/tagessieg .cache/tagessieg/tagessieg
           chmod +x .cache/tagessieg/tagessieg
-
-      - name: Save native binary cache
-        if: steps.native-cache-restore.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v5
-        with:
-          path: .cache/tagessieg/tagessieg
-          key: ${{ steps.native-cache-restore.outputs.cache-primary-key }}
 
       - name: Upload native binary artifact
         uses: actions/upload-artifact@v6
         with:
-          name: tagessieg-native-${{ runner.os }}-${{ runner.arch }}
+          name: tagessieg-native-linux-x64
           path: .cache/tagessieg/tagessieg
           if-no-files-found: error

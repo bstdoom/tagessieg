@@ -18,5 +18,5 @@ plugins {
 
 rootProject.name = "tagessieg"
 include(":core")
-include(":site")
+include(":native")
 includeBuild("_lib/kobweb-tabler")

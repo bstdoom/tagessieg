@@ -5,10 +5,7 @@ plugins {
   id("org.jetbrains.kotlin.multiplatform")
   alias(libs.plugins.ktx.serialization)
   alias(libs.plugins.ktx.dataframe)
-  alias(libs.plugins.graalvm.native)
 }
-
-val mainClassName = "io.github.bstdoom.tagessieg.TagessiegCli"
 
 repositories {
   // Use Maven Central for resolving dependencies.
@@ -65,23 +62,6 @@ kotlin {
       kotlin.srcDir("src/test/kotlin")
       resources.srcDir("src/test/resources")
     }
-  }
-}
-
-graalvmNative {
-  binaries {
-    create("main") {
-      imageName.set("tagessieg")
-      mainClass.set(mainClassName)
-      javaLauncher.set(javaToolchains.launcherFor {
-        languageVersion.set(JavaLanguageVersion.of(21))
-      })
-      buildArgs.add("-H:+AddAllCharsets")
-      buildArgs.add("--initialize-at-build-time=kotlin.DeprecationLevel")
-    }
-  }
-  metadataRepository {
-    enabled.set(true)
   }
 }
 
